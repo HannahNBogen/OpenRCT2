@@ -2159,11 +2159,19 @@ private:
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetSeatRotation(4);
                 dst2->SetMazeEntry(src2->GetMazeEntry());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+
+                auto trackType = dst2->GetTrackType();
+                if (track_element_has_speed_setting(trackType)==true){
+                    //if the track has a speed setting, set booster speed
+                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                }else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO){   //114 = track element ride photo
+                    //if it's a track that allows for photos, set photo time out
+                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                }
+
                 // Skipping IsHighlighted()
 
                 // TODO: Import Door A and Door B states.
