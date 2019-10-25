@@ -1071,7 +1071,11 @@ public:
                     //{
                     //    dst2->SetMazeEntry(src2->GetMazeEntry());
                     //}
-                    printf("flag");
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+                else if (ride_type == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
 
                 break;
