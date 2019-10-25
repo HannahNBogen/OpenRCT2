@@ -388,7 +388,9 @@ public:
 
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
-    void SetNumberOfCircuits();
+    void SetCircuitsBack(); //needed to add a function that would
+                                //reset the number of circuits, in case
+                                //a track can only have one circuit
     void UpdateMaxVehicles();
 
     bool HasSpinningTunnel() const;
