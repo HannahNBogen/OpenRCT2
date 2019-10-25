@@ -6994,6 +6994,13 @@ void Ride::UpdateMaxVehicles()
     }
 }
 
+void Ride::SetNumberOfCircuits()
+{
+    if (!CanHaveMultipleCircuits()){
+        num_circuits = 1;
+    }
+}
+
 void Ride::SetRideEntry(int32_t rideEntry)
 {
     auto colour = ride_get_unused_preset_vehicle_colour(rideEntry);

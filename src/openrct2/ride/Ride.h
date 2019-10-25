@@ -388,6 +388,7 @@ public:
 
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
+    void SetNumberOfCircuits();
     void UpdateMaxVehicles();
 
     bool HasSpinningTunnel() const;
