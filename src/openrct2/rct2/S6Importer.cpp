@@ -1071,6 +1071,7 @@ public:
                     //{
                     //    dst2->SetMazeEntry(src2->GetMazeEntry());
                     //}
+                    printf("flag");
                 }
 
                 break;
