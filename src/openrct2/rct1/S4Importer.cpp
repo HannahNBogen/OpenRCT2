@@ -782,8 +782,9 @@ private:
         // Ride name
         if (is_user_string_id(src->name))
         {
-            auto rideName = GetUserString(src->name);
-            dst->custom_name = rct2_to_utf8(rideName, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            //auto rideName = GetUserString(src->name);
+            //dst->custom_name = rct2_to_utf8(rideName, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            dst->custom_name = GetUserString(src->name);
         }
 
         dst->status = src->status;
