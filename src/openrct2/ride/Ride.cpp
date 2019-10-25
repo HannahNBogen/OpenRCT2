@@ -6994,8 +6994,7 @@ void Ride::UpdateMaxVehicles()
     }
 }
 
-void Ride::SetNumberOfCircuits()
-{
+void Ride::SetNumberOfCircuits(){   //will make it so we can have more than one circuit
     if (!CanHaveMultipleCircuits()){
         num_circuits = 1;
     }
