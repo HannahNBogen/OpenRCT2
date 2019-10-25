@@ -2164,12 +2164,17 @@ private:
                 dst2->SetMazeEntry(src2->GetMazeEntry());
 
                 auto trackType = dst2->GetTrackType();
+
+                //should make it so the roller coaster doesn't bounce backwards
+
                 if (track_element_has_speed_setting(trackType)==true){
                     //if the track has a speed setting, set booster speed
-                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                    const uint8_t bbs = src2->GetBrakeBoosterSpeed();
+                    dst2->SetBrakeBoosterSpeed(bbs);
                 }else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO){   //114 = track element ride photo
                     //if it's a track that allows for photos, set photo time out
-                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                    const uint8_t pt = src2->GetPhotoTimeout();
+                    dst2->SetPhotoTimeout(pt);
                 }
 
                 // Skipping IsHighlighted()
