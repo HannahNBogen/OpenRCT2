@@ -101,16 +101,24 @@ public:
         res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
         // If we have reached our max peep spawns, use peep spawn next to last one set.
-        if (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+        //if (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+        while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS) //removing instead
         {
-            auto peepSpawnIndex = _nextPeepSpawnIndex;
-            _nextPeepSpawnIndex = (peepSpawnIndex + 1) % (int32_t)gPeepSpawns.size();
+            //auto peepSpawnIndex = _nextPeepSpawnIndex;
+            //_nextPeepSpawnIndex = (peepSpawnIndex + 1) % (int32_t)gPeepSpawns.size();
 
             // Before the new location is set, clear the old location
-            int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
-            gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
+            //int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
+            //gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
 
-            map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
+            
+            auto grandpaSpawn = gPeepSpawns.begin();
+            auto grandpaX = grandpaX->x;
+            auto grandpaY = grandpaY->y;
+            gPeepSpawns.erase(grandpaSpawn); //new
+            
+            //map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
+            map_invalidate_tile_full(grandpaX, grandpaY);
         }
 
         // Shift the spawn point to the middle of the tile
