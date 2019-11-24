@@ -124,6 +124,49 @@ public:
     }
 
 private:
+
+    void DeleteRidePeepPhotos(Peep* peep)
+    {
+        if (peep->item_standard_flags & PEEP_ITEM_PHOTO)
+        {
+            if (peep->photo1_ride_ref == _rideIndex)
+            {
+                peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
+            }
+        }
+        if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
+        {
+            if (peep->photo2_ride_ref == _rideIndex)
+            {
+                peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
+            }
+        }
+        if (peep->item_extra_flags & PEEP_ITEM_PHOTO3)
+        {
+            if (peep->photo3_ride_ref == _rideIndex)
+            {
+                peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
+            }
+        }
+        if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
+        {
+            if (peep->photo4_ride_ref == _rideIndex)
+            {
+                peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
+            }
+        }
+
+        if (peep->guest_heading_to_ride_id == _rideIndex)
+        {
+            peep->guest_heading_to_ride_id = RIDE_ID_NULL;
+        }
+        if (peep->favourite_ride == _rideIndex)
+        {
+            peep->favourite_ride = RIDE_ID_NULL;
+        }
+
+    }
+
     GameActionResult::Ptr DemolishRide(Ride * ride) const
     {
         money32 refundPrice = DemolishTracks();
@@ -178,43 +221,8 @@ private:
             }
 
             // remove any photos of this ride from peep
-            if (peep->item_standard_flags & PEEP_ITEM_PHOTO)
-            {
-                if (peep->photo1_ride_ref == _rideIndex)
-                {
-                    peep->item_standard_flags &= ~PEEP_ITEM_PHOTO;
-                }
-            }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO2)
-            {
-                if (peep->photo2_ride_ref == _rideIndex)
-                {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO2;
-                }
-            }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO3)
-            {
-                if (peep->photo3_ride_ref == _rideIndex)
-                {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO3;
-                }
-            }
-            if (peep->item_extra_flags & PEEP_ITEM_PHOTO4)
-            {
-                if (peep->photo4_ride_ref == _rideIndex)
-                {
-                    peep->item_extra_flags &= ~PEEP_ITEM_PHOTO4;
-                }
-            }
-
-            if (peep->guest_heading_to_ride_id == _rideIndex)
-            {
-                peep->guest_heading_to_ride_id = RIDE_ID_NULL;
-            }
-            if (peep->favourite_ride == _rideIndex)
-            {
-                peep->favourite_ride = RIDE_ID_NULL;
-            }
+            DeleteRidePeepPhotos(peep)
+        
 
             for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
