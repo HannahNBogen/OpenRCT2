@@ -248,9 +248,8 @@ bool window_ride_construction_update_state(
     int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
     int32_t* _y, int32_t* _z, int32_t* _properties)
 {
-    ride_id_t rideIndex;
-    uint8_t trackType, trackDirection;
-    uint16_t z, x, y, liftHillAndAlternativeState, properties;
+    uint8_t trackDirection;
+    uint16_t properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
     if (!std::get<0>(updated_element))
@@ -258,9 +257,9 @@ bool window_ride_construction_update_state(
         return true;
     }
 
-    trackType = std::get<1>(updated_element);
-    liftHillAndAlternativeState = 0;
-    rideIndex = _currentRideIndex;
+    uint8_t trackType = std::get<1>(updated_element);
+    uint16_t liftHillAndAlternativeState = 0;
+    ride_id_t rideIndex = _currentRideIndex;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
     {
         liftHillAndAlternativeState |= CONSTRUCTION_LIFT_HILL_SELECTED;
@@ -321,9 +320,9 @@ bool window_ride_construction_update_state(
 
     const rct_track_coordinates* trackCoordinates = get_track_coord_from_ride(ride, trackType);
 
-    x = _currentTrackBegin.x;
-    y = _currentTrackBegin.y;
-    z = _currentTrackBegin.z;
+    uint16_t x = _currentTrackBegin.x;
+    uint16_t y = _currentTrackBegin.y;
+    uint16_t z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         z -= trackCoordinates->z_end;

@@ -110,13 +110,12 @@ static void set_height(int32_t x, int32_t y, int32_t height)
 
 void mapgen_generate_blank(mapgen_settings* settings)
 {
-    int32_t x, y;
     map_clear_all_elements();
 
     map_init(settings->mapSize);
-    for (y = 1; y < settings->mapSize - 1; y++)
+    for (int32_t y = 1; y < settings->mapSize - 1; y++)
     {
-        for (x = 1; x < settings->mapSize - 1; x++)
+        for (int32_t x = 1; x < settings->mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
             surfaceElement->SetSurfaceStyle(settings->floor);
@@ -131,12 +130,12 @@ void mapgen_generate_blank(mapgen_settings* settings)
 
 void mapgen_generate(mapgen_settings* settings)
 {
-    int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
+    int32_t x, y;
 
-    mapSize = settings->mapSize;
-    floorTexture = settings->floor;
-    wallTexture = settings->wall;
-    waterLevel = settings->water_level;
+    int32_t mapSize = settings->mapSize;
+    int32_t floorTexture = settings->floor;
+    int32_t wallTexture = settings->wall;
+    int32_t waterLevel = settings->water_level;
 
     if (floorTexture == -1)
         floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
@@ -228,16 +227,14 @@ void mapgen_generate(mapgen_settings* settings)
 
 static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
 {
-    int32_t surfaceZ;
-    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
         return;
     }
 
-    surfaceZ = tile_element_height({ x * 32 + 16, y * 32 + 16 }) / 8;
-    tileElement = tile_element_insert({ x, y, surfaceZ }, 0b1111);
+    int32_t surfaceZ = tile_element_height({ x * 32 + 16, y * 32 + 16 }) / 8;
+    TileElement* tileElement = tile_element_insert({ x, y, surfaceZ }, 0b1111);
     assert(tileElement != nullptr);
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
     tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
@@ -300,7 +297,7 @@ static void mapgen_place_trees()
         }
     }
 
-    CoordsXY tmp, pos;
+    CoordsXY pos;
 
     std::vector<CoordsXY> availablePositions;
 
@@ -328,7 +325,7 @@ static void mapgen_place_trees()
         if (rindex == i)
             continue;
 
-        tmp = availablePositions[i];
+        CoordsXY tmp = availablePositions[i];
         availablePositions[i] = availablePositions[rindex];
         availablePositions[rindex] = tmp;
     }
@@ -383,13 +380,11 @@ static void mapgen_place_trees()
  */
 static void mapgen_set_water_level(int32_t waterLevel)
 {
-    int32_t x, y, mapSize;
+    int32_t mapSize = gMapSize;
 
-    mapSize = gMapSize;
-
-    for (y = 1; y < mapSize - 1; y++)
+    for (int32_t y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
             if (surfaceElement->base_height < waterLevel)
@@ -403,21 +398,20 @@ static void mapgen_set_water_level(int32_t waterLevel)
  */
 static void mapgen_smooth_height(int32_t iterations)
 {
-    int32_t i, x, y, xx, yy, avg;
     int32_t arraySize = _heightSize * _heightSize * sizeof(uint8_t);
     uint8_t* copyHeight = new uint8_t[arraySize];
 
-    for (i = 0; i < iterations; i++)
+    for (int32_t i = 0; i < iterations; i++)
     {
         std::memcpy(copyHeight, _height, arraySize);
-        for (y = 1; y < _heightSize - 1; y++)
+        for (int32_t y = 1; y < _heightSize - 1; y++)
         {
-            for (x = 1; x < _heightSize - 1; x++)
+            for (int32_t x = 1; x < _heightSize - 1; x++)
             {
-                avg = 0;
-                for (yy = -1; yy <= 1; yy++)
+                int32_t avg = 0;
+                for (int32_t yy = -1; yy <= 1; yy++)
                 {
-                    for (xx = -1; xx <= 1; xx++)
+                    for (int32_t xx = -1; xx <= 1; xx++)
                     {
                         avg += copyHeight[(y + yy) * _heightSize + (x + xx)];
                     }
@@ -436,15 +430,13 @@ static void mapgen_smooth_height(int32_t iterations)
  */
 static void mapgen_set_height()
 {
-    int32_t x, y, heightX, heightY, mapSize;
-
-    mapSize = _heightSize / 2;
-    for (y = 1; y < mapSize - 1; y++)
+    int32_t mapSize = _heightSize / 2;
+    for (int32_t y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < mapSize - 1; x++)
         {
-            heightX = x * 2;
-            heightY = y * 2;
+            int32_t heightX = x * 2;
+            int32_t heightY = y * 2;
 
             uint8_t q00 = get_height(heightX + 0, heightY + 0);
             uint8_t q01 = get_height(heightX + 0, heightY + 1);
@@ -610,8 +602,6 @@ static float grad(int32_t hash, float x, float y)
 
 static void mapgen_simplex(mapgen_settings* settings)
 {
-    int32_t x, y;
-
     float freq = settings->simplex_base_freq * (1.0f / _heightSize);
     int32_t octaves = settings->simplex_octaves;
 
@@ -619,9 +609,9 @@ static void mapgen_simplex(mapgen_settings* settings)
     int32_t high = settings->simplex_high;
 
     noise_rand();
-    for (y = 0; y < _heightSize; y++)
+    for (int32_t y = 0; y < _heightSize; y++)
     {
-        for (x = 0; x < _heightSize; x++)
+        for (int32_t x = 0; x < _heightSize; x++)
         {
             float noiseValue = std::clamp(fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;

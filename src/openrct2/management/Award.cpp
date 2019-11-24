@@ -77,7 +77,6 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
         return false;
@@ -86,7 +85,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_TIDY))
         return false;
 
-    negativeCount = 0;
+    int32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -111,16 +110,14 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t positiveCount;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    positiveCount = 0;
-    negativeCount = 0;
+    int32_t positiveCount = 0;
+    int32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -196,16 +193,14 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t positiveCount;
-    int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    positiveCount = 0;
-    negativeCount = 0;
+    int32_t positiveCount = 0;
+    int32_t negativeCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
@@ -279,15 +274,13 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t peepCount, staffCount;
-    int32_t staffTypeFlags;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
 
-    peepCount = 0;
-    staffCount = 0;
-    staffTypeFlags = 0;
+    int32_t peepCount = 0;
+    int32_t staffCount = 0;
+    int32_t staffTypeFlags = 0;
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
         if (peep->type == PEEP_TYPE_STAFF)
@@ -542,12 +535,11 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
 /** At least 10 peeps and more than 1/64 of total guests are lost or can't find something. */
 static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t activeAwardTypes)
 {
-    uint32_t peepsCounted, peepsLost;
     uint16_t spriteIndex;
     Peep* peep;
 
-    peepsCounted = 0;
-    peepsLost = 0;
+    uint32_t peepsCounted = 0;
+    uint32_t peepsLost = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)

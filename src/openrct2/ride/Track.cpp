@@ -565,16 +565,14 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
  */
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
 {
-    int32_t trackType, aBank, aAngle, bBank, bAngle;
-
-    trackType = a->AsTrack()->GetTrackType();
-    aBank = TrackDefinitions[trackType].bank_end;
-    aAngle = TrackDefinitions[trackType].vangle_end;
+    int32_t trackType = a->AsTrack()->GetTrackType();
+    int32_t aBank = TrackDefinitions[trackType].bank_end;
+    int32_t aAngle = TrackDefinitions[trackType].vangle_end;
     aBank = track_get_actual_bank(a, aBank);
 
     trackType = b->AsTrack()->GetTrackType();
-    bBank = TrackDefinitions[trackType].bank_start;
-    bAngle = TrackDefinitions[trackType].vangle_start;
+    int32_t bBank = TrackDefinitions[trackType].bank_start;
+    int32_t bAngle = TrackDefinitions[trackType].vangle_start;
     bBank = track_get_actual_bank(b, bBank);
 
     return aBank == bBank && aAngle == bAngle;
@@ -1036,11 +1034,10 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 
 void track_get_back(CoordsXYE* input, CoordsXYE* output)
 {
-    CoordsXYE lastTrack;
     track_begin_end currentTrack;
     bool result;
 
-    lastTrack = *input;
+    CoordsXYE lastTrack = *input;
     do
     {
         result = track_block_get_previous(lastTrack.x, lastTrack.y, lastTrack.element, &currentTrack);

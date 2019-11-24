@@ -669,11 +669,9 @@ static void paint_miniature_railway_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t imageId;
-
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    imageId = miniature_railway_station_floor[direction] | session->TrackColours[SCHEME_MISC];
+    uint32_t imageId = miniature_railway_station_floor[direction] | session->TrackColours[SCHEME_MISC];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height);
 
     imageId = miniature_railway_track_pieces_flat_station[direction] | session->TrackColours[SCHEME_TRACK];

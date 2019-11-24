@@ -628,8 +628,7 @@ bool util_gzip_compress(FILE* source, FILE* dest)
     {
         return false;
     }
-    int ret, flush;
-    size_t have;
+    int flush;
     z_stream strm{};
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
@@ -638,7 +637,7 @@ bool util_gzip_compress(FILE* source, FILE* dest)
     unsigned char out[CHUNK];
     int windowBits = 15;
     int GZIP_ENCODING = 16;
-    ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
+    int ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
     if (ret != Z_OK)
     {
         log_error("Failed to initialise stream");
@@ -665,7 +664,7 @@ bool util_gzip_compress(FILE* source, FILE* dest)
                 log_error("Failed to compress data");
                 return false;
             }
-            have = CHUNK - strm.avail_out;
+            size_t have = CHUNK - strm.avail_out;
             if (fwrite(out, 1, have, dest) != have || ferror(dest))
             {
                 deflateEnd(&strm);

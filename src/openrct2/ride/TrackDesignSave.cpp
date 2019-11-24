@@ -224,17 +224,15 @@ static void track_design_save_add_scenery(CoordsXY loc, SmallSceneryElement* sce
 
 static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
 {
-    rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t x0, y0, z0, z;
-    int32_t direction, sequence;
+    int32_t x0, y0, z0;
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
-    sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
+    rct_large_scenery_tile* sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
-    z = tileElement->base_height;
-    direction = tileElement->GetDirection();
-    sequence = tileElement->GetSequenceIndex();
+    int32_t z = tileElement->base_height;
+    int32_t direction = tileElement->GetDirection();
+    int32_t sequence = tileElement->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(loc.x, loc.y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -243,7 +241,7 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (rct_large_scenery_tile* tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
         int16_t offsetX = tile->x_offset;
         int16_t offsetY = tile->y_offset;
@@ -399,17 +397,15 @@ static void track_design_save_remove_scenery(CoordsXY loc, SmallSceneryElement* 
 
 static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
 {
-    rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t x0, y0, z0, z;
-    int32_t direction, sequence;
+    int32_t x0, y0, z0;
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
-    sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
+    rct_large_scenery_tile* sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
-    z = tileElement->base_height;
-    direction = tileElement->GetDirection();
-    sequence = tileElement->GetSequenceIndex();
+    int32_t z = tileElement->base_height;
+    int32_t direction = tileElement->GetDirection();
+    int32_t sequence = tileElement->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(loc.x, loc.y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -418,7 +414,7 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (rct_large_scenery_tile* tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
         int16_t offsetX = tile->x_offset;
         int16_t offsetY = tile->y_offset;
@@ -518,13 +514,11 @@ static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, 
 
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy)
 {
-    TileElement* tileElement;
-
     for (int32_t y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++)
     {
         for (int32_t x = cx - TRACK_NEARBY_SCENERY_DISTANCE; x <= cx + TRACK_NEARBY_SCENERY_DISTANCE; x++)
         {
-            tileElement = map_get_first_element_at(x, y);
+            TileElement* tileElement = map_get_first_element_at(x, y);
             do
             {
                 int32_t interactionType = VIEWPORT_INTERACTION_ITEM_NONE;

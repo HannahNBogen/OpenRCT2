@@ -70,9 +70,7 @@ const LocationXY8 ScenerySubTileOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, {
 
 void scenery_update_tile(int32_t x, int32_t y)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -114,10 +112,7 @@ void scenery_update_tile(int32_t x, int32_t y)
  */
 void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 {
-    TileElement* tileElementAbove;
-    rct_scenery_entry* sceneryEntry;
-
-    sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+    rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -136,7 +131,7 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
     }
 
     // Check map elements above, presumably to see if map element is blocked from rain
-    tileElementAbove = tileElement;
+    TileElement* tileElementAbove = tileElement;
     // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
     while (!(tileElementAbove->GetOccupiedQuadrants()))
     {
@@ -177,11 +172,9 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
  */
 void scenery_remove_ghost_tool_placement()
 {
-    int16_t x, y, z;
-
-    x = gSceneryGhostPosition.x;
-    y = gSceneryGhostPosition.y;
-    z = gSceneryGhostPosition.z;
+    int16_t x = gSceneryGhostPosition.x;
+    int16_t y = gSceneryGhostPosition.y;
+    int16_t z = gSceneryGhostPosition.z;
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_0)
     {

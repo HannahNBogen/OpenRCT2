@@ -389,7 +389,7 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
 static void format_integer(char** dest, size_t* size, int64_t value)
 {
     int32_t digit;
-    char *nbegin, *nend, *ncur;
+    char*nend;
     char tmp;
 
     if ((*size) == 0)
@@ -408,7 +408,7 @@ static void format_integer(char** dest, size_t* size, int64_t value)
         return;
     }
 
-    nbegin = (*dest);
+    char* nbegin = (*dest);
 
     // Right to left
     while (value > 0 && (*size) > 1)
@@ -421,7 +421,7 @@ static void format_integer(char** dest, size_t* size, int64_t value)
 
     if (value > 0)
     {
-        ncur = nbegin;
+        char* ncur = nbegin;
 
         while (value > 0)
         {
@@ -452,8 +452,8 @@ static void format_integer(char** dest, size_t* size, int64_t value)
 
 static void format_comma_separated_integer(char** dest, size_t* size, int64_t value)
 {
-    int32_t digit, groupIndex;
-    char *nbegin, *nend, *ncur;
+    int32_t digit;
+    char*nend;
     char tmp;
     const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
     const char* ch = nullptr;
@@ -474,10 +474,10 @@ static void format_comma_separated_integer(char** dest, size_t* size, int64_t va
         return;
     }
 
-    nbegin = *dest;
+    char* nbegin = *dest;
 
     // Groups of three digits, right to left
-    groupIndex = 0;
+    int32_t groupIndex = 0;
     while (value > 0 && (*size) > 1)
     {
         // Append group separator
@@ -505,7 +505,7 @@ static void format_comma_separated_integer(char** dest, size_t* size, int64_t va
 
     if (value > 0)
     {
-        ncur = nbegin;
+        char* ncur = nbegin;
 
         while (value > 0)
         {
@@ -553,8 +553,8 @@ static void format_comma_separated_integer(char** dest, size_t* size, int64_t va
 
 static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t value)
 {
-    int32_t digit, groupIndex;
-    char *nbegin, *nend, *ncur;
+    int32_t digit;
+    char*nend;
     char tmp;
     const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
     const char* decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
@@ -571,7 +571,7 @@ static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t 
         value = -value;
     }
 
-    nbegin = (*dest);
+    char* nbegin = (*dest);
 
     // In the case of buffers this small,
     // all of this would be truncated anyways.
@@ -586,7 +586,7 @@ static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t 
     }
     value /= 10;
 
-    groupIndex = 0;
+    int32_t groupIndex = 0;
     while ((zeroNeeded || value > 0) && (*size) > 1)
     {
         // Append group separator
@@ -615,7 +615,7 @@ static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t 
 
     if (zeroNeeded || value > 0)
     {
-        ncur = nbegin;
+        char* ncur = nbegin;
 
         while (zeroNeeded || value > 0)
         {
@@ -664,8 +664,8 @@ static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t 
 
 static void format_comma_separated_fixed_2dp(char** dest, size_t* size, int64_t value)
 {
-    int32_t digit, groupIndex;
-    char *nbegin, *nend, *ncur;
+    int32_t digit;
+    char*nend;
     char tmp;
     const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
     const char* decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
@@ -682,7 +682,7 @@ static void format_comma_separated_fixed_2dp(char** dest, size_t* size, int64_t 
         value = -value;
     }
 
-    nbegin = (*dest);
+    char* nbegin = (*dest);
 
     // In the case of buffers this small,
     // all of this would be truncated anyways.
@@ -705,7 +705,7 @@ static void format_comma_separated_fixed_2dp(char** dest, size_t* size, int64_t 
         ch = decimalMark;
     }
 
-    groupIndex = 0;
+    int32_t groupIndex = 0;
     while ((zeroNeeded || value > 0) && (*size) > 1)
     {
         // Append group separator
@@ -734,7 +734,7 @@ static void format_comma_separated_fixed_2dp(char** dest, size_t* size, int64_t 
 
     if (zeroNeeded || value > 0)
     {
-        ncur = nbegin;
+        char* ncur = nbegin;
 
         while (zeroNeeded || value > 0)
         {

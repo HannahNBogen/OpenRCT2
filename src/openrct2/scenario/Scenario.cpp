@@ -422,30 +422,30 @@ void scenario_update()
  */
 static int32_t scenario_create_ducks()
 {
-    int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+    int32_t i;
 
-    r = scenario_rand();
-    x = ((r >> 16) & 0xFFFF) & 0x7F;
-    y = (r & 0xFFFF) & 0x7F;
+    int32_t r = scenario_rand();
+    int32_t x = ((r >> 16) & 0xFFFF) & 0x7F;
+    int32_t y = (r & 0xFFFF) & 0x7F;
     x = (x + 64) * 32;
     y = (y + 64) * 32;
 
     if (!map_is_location_in_park({ x, y }))
         return 0;
 
-    centreWaterZ = (tile_element_water_height({ x, y }));
+    int32_t centreWaterZ = (tile_element_water_height({ x, y }));
     if (centreWaterZ == 0)
         return 0;
 
     // Check 7x7 area around centre tile
-    x2 = x - (32 * 3);
-    y2 = y - (32 * 3);
-    c = 0;
+    int32_t x2 = x - (32 * 3);
+    int32_t y2 = y - (32 * 3);
+    int32_t c = 0;
     for (i = 0; i < 7; i++)
     {
-        for (j = 0; j < 7; j++)
+        for (int32_t j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_water_height({ x2, y2 }));
+            int32_t waterZ = (tile_element_water_height({ x2, y2 }));
             if (waterZ == centreWaterZ)
                 c++;
 
@@ -543,14 +543,13 @@ static bool scenario_prepare_rides_for_save()
         return false;
     }
 
-    bool markTrackAsIndestructible;
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     do
     {
         if (it.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            markTrackAsIndestructible = false;
+            bool markTrackAsIndestructible = false;
 
             if (isFiveCoasterObjective)
             {

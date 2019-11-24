@@ -154,7 +154,6 @@ void vehicle_visual_virginia_reel(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    int32_t image_id;
     int32_t baseImage_id = imageDirection;
     const uint8_t rotation = session->CurrentRotation;
     int32_t ecx = ((vehicle->spin_sprite / 8) + (rotation * 8)) & 31;
@@ -195,7 +194,7 @@ void vehicle_visual_virginia_reel(
     baseImage_id += vehicleEntry->base_image_id;
 
     const vehicle_boundbox* bb = &_virginiaReelBoundbox[j];
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {
         image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;

@@ -115,7 +115,6 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_ride_entry* rideEntry;
         auto res = MakeResult();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
@@ -124,7 +123,7 @@ public:
         res->rideIndex = rideIndex;
 
         auto ride = GetOrAllocateRide(rideIndex);
-        rideEntry = get_ride_entry(rideEntryIndex);
+        rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
         if (rideEntry == nullptr)
         {
             log_warning("Invalid request for ride %u", rideIndex);

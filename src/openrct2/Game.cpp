@@ -322,22 +322,19 @@ int32_t game_do_command(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int3
 int32_t game_do_command_p(
     uint32_t command, int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
 {
-    int32_t cost, flags;
-    int32_t original_ebx, original_edx, original_esi, original_edi, original_ebp;
-
     *esi = command;
-    original_ebx = *ebx;
-    original_edx = *edx;
-    original_esi = *esi;
-    original_edi = *edi;
-    original_ebp = *ebp;
+    int32_t original_ebx = *ebx;
+    int32_t original_edx = *edx;
+    int32_t original_esi = *esi;
+    int32_t original_edi = *edi;
+    int32_t original_ebp = *ebp;
 
     if (command >= std::size(new_game_command_table))
     {
         return MONEY32_UNDEFINED;
     }
 
-    flags = *ebx;
+    int32_t flags = *ebx;
 
     auto* replayManager = GetContext()->GetReplayManager();
     if (replayManager->IsReplaying())
@@ -368,7 +365,7 @@ int32_t game_do_command_p(
 
     // First call for validity and price check
     new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
-    cost = *ebx;
+    int32_t cost = *ebx;
 
     if (cost != MONEY32_UNDEFINED)
     {

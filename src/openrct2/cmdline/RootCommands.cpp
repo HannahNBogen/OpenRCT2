@@ -463,7 +463,6 @@ static void PrintLaunchInformation()
 {
     char buffer[256];
     time_t timer;
-    struct tm* tmInfo;
 
     // Print name and version information
     openrct2_write_full_version_info(buffer, sizeof(buffer));
@@ -477,7 +476,7 @@ static void PrintLaunchInformation()
 
     // Print current time
     time(&timer);
-    tmInfo = localtime(&timer);
+    struct tm* tmInfo = localtime(&timer);
     strftime(buffer, sizeof(buffer), "%Y/%m/%d %H:%M:%S", tmInfo);
     Console::WriteFormat("VERBOSE: time is %s", buffer);
     Console::WriteLine();

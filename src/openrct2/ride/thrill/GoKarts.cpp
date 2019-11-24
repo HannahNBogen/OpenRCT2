@@ -161,10 +161,9 @@ static void paint_go_karts_track_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t imageId;
     paint_struct* ps;
 
-    imageId = go_karts_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = go_karts_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height);
@@ -215,10 +214,9 @@ static void paint_go_karts_track_flat_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t imageId;
     paint_struct* ps;
 
-    imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height);
@@ -269,10 +267,9 @@ static void paint_go_karts_track_25_deg_up_to_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t imageId;
     paint_struct* ps;
 
-    imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height);
@@ -355,7 +352,6 @@ static void paint_go_karts_station(
     auto stationObj = ride_get_station_object(ride);
 
     bool hasFence;
-    uint32_t imageId;
     const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
@@ -363,7 +359,7 @@ static void paint_go_karts_station(
         sprites = go_karts_track_pieces_starting_grid_end;
     }
 
-    imageId = sprites[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = sprites[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
     {
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height);

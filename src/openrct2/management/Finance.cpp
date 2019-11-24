@@ -140,14 +140,12 @@ void finance_pay_wages()
  **/
 void finance_pay_research()
 {
-    uint8_t level;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    level = gResearchFundingLevel;
+    uint8_t level = gResearchFundingLevel;
     finance_payment(research_cost_table[level] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
 }
 
@@ -161,14 +159,13 @@ void finance_pay_interest()
     // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     money64 current_loan = gBankLoan;
     uint8_t current_interest_rate = gBankLoanInterestRate;
-    money32 interest_to_pay;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
+    money32 interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
 
     finance_payment(interest_to_pay, RCT_EXPENDITURE_TYPE_INTEREST);
 }

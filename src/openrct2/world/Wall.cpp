@@ -35,12 +35,10 @@
  */
 void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1)
 {
-    TileElement* tileElement;
-
     z0 /= 8;
     z1 /= 8;
 repeat:
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
@@ -72,9 +70,7 @@ void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
  */
 void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)

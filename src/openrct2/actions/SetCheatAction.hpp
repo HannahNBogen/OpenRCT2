@@ -350,11 +350,9 @@ private:
 
     void SetGrassLength(int32_t length) const
     {
-        int32_t x, y;
-
-        for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
         {
-            for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+            for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
                 auto surfaceElement = map_get_surface_element_at(x, y);
                 if (surfaceElement == nullptr)
@@ -408,18 +406,16 @@ private:
 
     void RemoveLitter() const
     {
-        rct_litter* litter;
-        uint16_t spriteIndex, nextSpriteIndex;
+        uint16_t nextSpriteIndex;
 
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
         {
-            litter = &(get_sprite(spriteIndex)->litter);
+            rct_litter* litter = &(get_sprite(spriteIndex)->litter);
             nextSpriteIndex = litter->next;
             sprite_remove((rct_sprite*)litter);
         }
 
         tile_element_iterator it;
-        rct_scenery_entry* sceneryEntry;
 
         tile_element_iterator_begin(&it);
         do
@@ -430,7 +426,7 @@ private:
             if (!(it.element)->AsPath()->HasAddition())
                 continue;
 
-            sceneryEntry = it.element->AsPath()->GetAdditionEntry();
+            rct_scenery_entry* sceneryEntry = it.element->AsPath()->GetAdditionEntry();
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
                 it.element->AsPath()->SetAdditionStatus(0xFF);
 

@@ -67,9 +67,7 @@ static constexpr const litter_sprite litter_sprites[] = {
  */
 void litter_paint(paint_session* session, const rct_litter* litter, int32_t imageDirection)
 {
-    rct_drawpixelinfo* dpi;
-
-    dpi = &session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level != 0)
         return; // If zoomed at all no litter drawn
 

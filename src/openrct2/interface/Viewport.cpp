@@ -556,9 +556,8 @@ void viewport_update_position(rct_window* window)
 
     int16_t x = window->saved_view_x + viewport->view_width / 2;
     int16_t y = window->saved_view_y + viewport->view_height / 2;
-    LocationXY16 mapCoord;
 
-    mapCoord = viewport_coord_to_map_coord(x, y, 0);
+    LocationXY16 mapCoord = viewport_coord_to_map_coord(x, y, 0);
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
@@ -1539,8 +1538,6 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
     uint8_t* source_pointer = g1->offset;
     uint8_t* new_source_pointer_start = (uint8_t*)malloc(total_no_pixels);
     uint8_t* new_source_pointer = (*&new_source_pointer_start); // 0x9E3D28;
-    intptr_t ebx1;
-    int32_t ecx;
     while (total_no_pixels > 0)
     {
         int8_t no_pixels = *source_pointer;
@@ -1553,7 +1550,7 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
             source_pointer += no_pixels;
             continue;
         }
-        ecx = no_pixels;
+        int32_t ecx = no_pixels;
         no_pixels &= 0x7;
         ecx >>= 3; // SAR
         uintptr_t eax = ((int32_t)no_pixels) << 8;
@@ -1561,7 +1558,7 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
         eax = (eax & 0xFF00) + *(source_pointer + 1);
         total_no_pixels -= ecx;
         source_pointer += 2;
-        ebx1 = (uintptr_t)new_source_pointer - eax;
+        intptr_t ebx1 = (uintptr_t)new_source_pointer - eax;
         eax = (uintptr_t)source_pointer;
         source_pointer = (uint8_t*)ebx1;
         ebx1 = eax;

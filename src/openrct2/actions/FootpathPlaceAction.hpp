@@ -434,10 +434,9 @@ private:
 
     PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const
     {
-        TileElement* tileElement;
         bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 
-        tileElement = map_get_first_element_at(x, y);
+        TileElement* tileElement = map_get_first_element_at(x, y);
         do
         {
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z

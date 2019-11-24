@@ -320,14 +320,11 @@ static void sprite_reset(rct_sprite_generic* sprite)
  */
 void sprite_clear_all_unused()
 {
-    rct_sprite_generic* sprite;
-    uint16_t spriteIndex, nextSpriteIndex;
-
-    spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        sprite = &get_sprite(spriteIndex)->generic;
-        nextSpriteIndex = sprite->next;
+        rct_sprite_generic* sprite = &get_sprite(spriteIndex)->generic;
+        uint16_t nextSpriteIndex = sprite->next;
         sprite_reset(sprite);
         sprite->linked_list_index = SPRITE_LIST_FREE;
 
@@ -597,13 +594,10 @@ static void sprite_misc_update(rct_sprite* sprite)
  */
 void sprite_misc_update_all()
 {
-    rct_sprite* sprite;
-    uint16_t spriteIndex;
-
-    spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        sprite = get_sprite(spriteIndex);
+        rct_sprite* sprite = get_sprite(spriteIndex);
         spriteIndex = sprite->generic.next;
         sprite_misc_update(sprite);
     }
@@ -705,12 +699,10 @@ void sprite_remove(rct_sprite* sprite)
 
 static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement;
-
     if (!map_is_location_owned({ x, y, z }))
         return false;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)

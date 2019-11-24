@@ -56,9 +56,7 @@ static void fence_paint_door(
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER)
     {
-        paint_struct* ps;
-
-        ps = sub_98197C(
+        paint_struct* ps = sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsR1.x, boundsR1.y, (int8_t)boundsR1.z, offset.z,
             boundsR1_.x, boundsR1_.y, boundsR1_.z);
         if (ps != nullptr)
@@ -76,9 +74,7 @@ static void fence_paint_door(
     }
     else
     {
-        paint_struct* ps;
-
-        ps = sub_98197C(
+        paint_struct* ps = sub_98197C(
             session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsL1.x, boundsL1.y, (int8_t)boundsL1.z, offset.z,
             boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr)

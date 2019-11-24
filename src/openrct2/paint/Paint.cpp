@@ -318,7 +318,6 @@ template<uint8_t _TRotation>
 static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
     paint_struct* ps;
-    paint_struct* ps_temp;
     do
     {
         ps = ps_next;
@@ -330,7 +329,7 @@ static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next
     // Cache the last visited node so we don't have to walk the whole list again
     paint_struct* ps_cache = ps;
 
-    ps_temp = ps;
+    paint_struct* ps_temp = ps;
     do
     {
         ps = ps->next_quadrant_ps;

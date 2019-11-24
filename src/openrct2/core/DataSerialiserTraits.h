@@ -232,7 +232,7 @@ template<> struct DataSerializerTraits<MemoryStream>
     static void encode(IStream* stream, const MemoryStream& val)
     {
         DataSerializerTraits<uint32_t> s;
-        s.encode(stream, val.GetLength());
+        s.encode(stream, val.GetLength()); //DataSerializerTraits<uint32_t>::encode(stream, val.GetLength());
 
         stream->Write(val.GetData(), val.GetLength());
     }

@@ -27,9 +27,8 @@ bool gUseRLE = true;
 
 uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
 {
-    size_t i;
     uint32_t checksum = 0;
-    for (i = 0; i < length; i++)
+    for (size_t i = 0; i < length; i++)
         checksum += buffer[i];
 
     return checksum;
@@ -125,14 +124,11 @@ size_t sawyercoding_decode_sc4(const uint8_t* src, uint8_t* dst, size_t length, 
 
 size_t sawyercoding_encode_sv4(const uint8_t* src, uint8_t* dst, size_t length)
 {
-    size_t encodedLength;
-    uint32_t checksum;
-
     // Encode
-    encodedLength = encode_chunk_rle(src, dst, length);
+    size_t encodedLength = encode_chunk_rle(src, dst, length);
 
     // Append checksum
-    checksum = sawyercoding_calculate_checksum(dst, encodedLength);
+    uint32_t checksum = sawyercoding_calculate_checksum(dst, encodedLength);
     *((uint32_t*)&dst[encodedLength]) = checksum;
 
     return encodedLength + 4;
@@ -192,18 +188,15 @@ int32_t sawyercoding_validate_track_checksum(const uint8_t* src, size_t length)
  */
 static size_t decode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length)
 {
-    size_t count;
-    uint8_t *dst, rleCodeByte;
-
-    dst = dst_buffer;
+    uint8_t* dst = dst_buffer;
 
     for (size_t i = 0; i < length; i++)
     {
-        rleCodeByte = src_buffer[i];
+        uint8_t rleCodeByte = src_buffer[i];
         if (rleCodeByte & 128)
         {
             i++;
-            count = 257 - rleCodeByte;
+            size_t count = 257 - rleCodeByte;
             std::fill_n(dst, count, src_buffer[i]);
             dst = (uint8_t*)((uintptr_t)dst + count);
         }
@@ -225,20 +218,17 @@ static size_t decode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, s
  */
 static size_t decode_chunk_rle_with_size(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length, size_t dstSize)
 {
-    size_t count;
-    uint8_t *dst, rleCodeByte;
-
-    dst = dst_buffer;
+    uint8_t* dst = dst_buffer;
 
     assert(length > 0);
     assert(dstSize > 0);
     for (size_t i = 0; i < length; i++)
     {
-        rleCodeByte = src_buffer[i];
+        uint8_t rleCodeByte = src_buffer[i];
         if (rleCodeByte & 128)
         {
             i++;
-            count = 257 - rleCodeByte;
+            size_t count = 257 - rleCodeByte;
             assert(dst + count <= dst_buffer + dstSize);
             assert(i < length);
             std::fill_n(dst, count, src_buffer[i]);
@@ -383,9 +373,8 @@ static size_t encode_chunk_repeat(const uint8_t* src_buffer, uint8_t* dst_buffer
 
 static void encode_chunk_rotate(uint8_t* buffer, size_t length)
 {
-    size_t i;
     uint8_t code = 1;
-    for (i = 0; i < length; i++)
+    for (size_t i = 0; i < length; i++)
     {
         buffer[i] = rol8(buffer[i], code);
         code = (code + 2) % 8;
@@ -396,13 +385,11 @@ static void encode_chunk_rotate(uint8_t* buffer, size_t length)
 
 int32_t sawyercoding_detect_file_type(const uint8_t* src, size_t length)
 {
-    size_t i;
-
     // Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
 
     uint32_t checksum = *((uint32_t*)&src[length - 4]);
     uint32_t actualChecksum = 0;
-    for (i = 0; i < length - 4; i++)
+    for (size_t i = 0; i < length - 4; i++)
     {
         actualChecksum = (actualChecksum & 0xFFFFFF00) | (((actualChecksum & 0xFF) + (uint8_t)src[i]) & 0xFF);
         actualChecksum = rol32(actualChecksum, 3);

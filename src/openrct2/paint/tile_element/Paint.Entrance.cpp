@@ -81,7 +81,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         return;
     }
 
-    uint8_t colour_1, colour_2;
+    uint8_t colour_1;
     uint32_t transparant_image_id = 0, image_id = 0;
     if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
@@ -90,7 +90,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     }
 
     colour_1 = ride->track_colour[0].main;
-    colour_2 = ride->track_colour[0].additional;
+    uint8_t colour_2 = ride->track_colour[0].additional;
     image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;

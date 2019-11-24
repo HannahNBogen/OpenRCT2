@@ -34,7 +34,6 @@ const LocationXY16 BannerBoundBoxes[][2] = {
  */
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
-    uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     rct_drawpixelinfo* dpi = &session->DPI;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
@@ -65,9 +64,9 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     direction += bannerElement->GetPosition();
     direction &= 3;
 
-    boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
-    boundBoxOffsetY = BannerBoundBoxes[direction][0].y;
-    boundBoxOffsetZ = height + 2;
+    uint16_t boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
+    uint16_t boundBoxOffsetY = BannerBoundBoxes[direction][0].y;
+    uint16_t boundBoxOffsetZ = height + 2;
 
     uint32_t base_id = (direction << 1) + banner_scenery->image;
     uint32_t image_id = base_id;

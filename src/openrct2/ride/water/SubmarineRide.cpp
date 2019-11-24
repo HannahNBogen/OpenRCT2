@@ -31,7 +31,6 @@ void vehicle_visual_submarine(
     }
 
     int32_t baseImage_id = imageDirection;
-    int32_t image_id;
     if (vehicle->restraints_position >= 64)
     {
         if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3))
@@ -59,7 +58,7 @@ void vehicle_visual_submarine(
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
 
-    image_id = baseImage_id | imageFlags;
+    int32_t image_id = baseImage_id | imageFlags;
     paint_struct* ps = sub_98197C(
         session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
     if (ps != nullptr)

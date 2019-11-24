@@ -202,16 +202,13 @@ static int TTF_strikethrough_top_row(TTF_Font* font)
 
 static void TTF_initLineMectrics(const TTF_Font* font, const TTFSurface* textbuf, const int row, uint8_t** pdst, int* pheight)
 {
-    uint8_t* dst;
-    int height;
-
-    dst = (uint8_t*)textbuf->pixels;
+    uint8_t* dst = (uint8_t*)textbuf->pixels;
     if (row > 0)
     {
         dst += row * textbuf->pitch;
     }
 
-    height = font->underline_height;
+    int height = font->underline_height;
     /* Take outline into account */
     if (font->outline > 0)
     {
@@ -227,7 +224,6 @@ outline into account.
 */
 static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
-    int line;
     uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
     uint8_t* dst;
     int height;
@@ -235,7 +231,7 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
     TTF_initLineMectrics(font, textbuf, row, &dst, &height);
 
     /* Draw line */
-    for (line = height; line > 0 && dst < dst_check; --line)
+    for (int line = height; line > 0 && dst < dst_check; --line)
     {
         /* 1 because 0 is the bg color */
         std::fill_n(dst, textbuf->w, 0x01);
@@ -249,7 +245,6 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
 */
 static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
-    int line;
     uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
     uint8_t* dst;
     int height;
@@ -257,7 +252,7 @@ static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf,
     TTF_initLineMectrics(font, textbuf, row, &dst, &height);
 
     /* Draw line */
-    for (line = height; line > 0 && dst < dst_check; --line)
+    for (int line = height; line > 0 && dst < dst_check; --line)
     {
         std::fill_n(dst, textbuf->w, NUM_GRAYS - 1);
         dst += textbuf->pitch;
@@ -321,9 +316,7 @@ int TTF_Init(void)
 
 static unsigned long RWread(FT_Stream stream, unsigned long offset, unsigned char* buffer, unsigned long count)
 {
-    FILE* src;
-
-    src = (FILE*)stream->descriptor.pointer;
+    FILE* src = (FILE*)stream->descriptor.pointer;
     fseek(src, (int)offset, SEEK_SET);
     if (count == 0)
     {
@@ -343,15 +336,6 @@ static size_t fsize(FILE* file)
 
 static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long index)
 {
-    TTF_Font* font;
-    FT_Error error;
-    FT_Face face;
-    FT_Fixed scale;
-    FT_Stream stream;
-    FT_CharMap found;
-    int64_t position;
-    int i;
-
     if (!TTF_initialized)
     {
         TTF_SetError("Library not initialized");
@@ -369,7 +353,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     }
 
     /* Check to make sure we can seek in this stream */
-    position = ftell(src);
+    int64_t position = ftell(src);
     if (position < 0)
     {
         TTF_SetError("Can't seek in stream");
@@ -380,7 +364,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         return NULL;
     }
 
-    font = (TTF_Font*)malloc(sizeof *font);
+    TTF_Font* font = (TTF_Font*)malloc(sizeof *font);
     if (font == NULL)
     {
         TTF_SetError("Out of memory");
@@ -395,7 +379,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     font->src = src;
     font->freesrc = freesrc;
 
-    stream = (FT_Stream)malloc(sizeof(*stream));
+    FT_Stream stream = (FT_Stream)malloc(sizeof(*stream));
     if (stream == NULL)
     {
         TTF_SetError("Out of memory");
@@ -412,18 +396,18 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     font->args.flags = FT_OPEN_STREAM;
     font->args.stream = stream;
 
-    error = FT_Open_Face(library, &font->args, index, &font->face);
+    FT_Error error = FT_Open_Face(library, &font->args, index, &font->face);
     if (error)
     {
         TTF_SetFTError("Couldn't load font file", error);
         TTF_CloseFont(font);
         return NULL;
     }
-    face = font->face;
+    FT_Face face = font->face;
 
     /* Set charmap for loaded font */
-    found = 0;
-    for (i = 0; i < face->num_charmaps; i++)
+    FT_CharMap found = 0;
+    for (int i = 0; i < face->num_charmaps; i++)
     {
         FT_CharMap charmap = face->charmaps[i];
         if ((charmap->platform_id == 3 && charmap->encoding_id == 1)    /* Windows Unicode */
@@ -454,7 +438,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         }
 
         /* Get the scalable font metrics for this font */
-        scale = face->size->metrics.y_scale;
+        FT_Fixed scale = face->size->metrics.y_scale;
         font->ascent = FT_CEIL(FT_MulFix(face->ascender, scale));
         font->descent = FT_CEIL(FT_MulFix(face->descender, scale));
         font->height = font->ascent - font->descent + /* baseline */ 1;
@@ -557,10 +541,9 @@ static void Flush_Glyph(c_glyph* glyph)
 
 static void Flush_Cache(TTF_Font* font)
 {
-    int i;
     int size = sizeof(font->cache) / sizeof(font->cache[0]);
 
-    for (i = 0; i < size; ++i)
+    for (int i = 0; i < size; ++i)
     {
         if (font->cache[i].cached)
         {
@@ -1120,13 +1103,9 @@ int TTF_GlyphIsProvided(const TTF_Font* font, codepoint_t ch)
 
 int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
 {
-    int status;
-    int x, z;
-    int minx, maxx;
-    int miny, maxy;
-    c_glyph* glyph;
-    FT_Error error;
-    FT_Long use_kerning;
+    int z;
+    int maxx;
+    int maxy;
     FT_UInt prev_index = 0;
     int outline_delta = 0;
     size_t textlen;
@@ -1134,12 +1113,12 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
     TTF_CHECKPOINTER(text, -1);
 
     /* Initialize everything to 0 */
-    status = 0;
-    minx = maxx = 0;
-    miny = maxy = 0;
+    int status = 0;
+    int minx = maxx = 0;
+    int miny = maxy = 0;
 
     /* check kerning */
-    use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
+    FT_Long use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
 
     /* Init outline handling */
     if (font->outline > 0)
@@ -1149,7 +1128,7 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
 
     /* Load each character and sum it's bounding box */
     textlen = strlen(text);
-    x = 0;
+    int x = 0;
     while (textlen > 0)
     {
         uint16_t c = UTF8_getch(&text, &textlen);
@@ -1158,13 +1137,13 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
             continue;
         }
 
-        error = Find_Glyph(font, c, CACHED_METRICS);
+        FT_Error error = Find_Glyph(font, c, CACHED_METRICS);
         if (error)
         {
             TTF_SetFTError("Couldn't find glyph", error);
             return -1;
         }
-        glyph = font->current;
+        c_glyph* glyph = font->current;
 
         /* handle kerning */
         if (use_kerning && prev_index && glyph->index)
@@ -1257,20 +1236,10 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
 
 TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t colour)
 {
-    bool first;
-    int xstart;
     int width;
     int height;
-    TTFSurface* textbuf;
-    uint8_t* src;
-    uint8_t* dst;
-    uint8_t* dst_check;
-    unsigned int row, col;
-    c_glyph* glyph;
+    unsigned int row;
 
-    FT_Bitmap* current;
-    FT_Error error;
-    FT_Long use_kerning;
     FT_UInt prev_index = 0;
     size_t textlen;
 
@@ -1284,7 +1253,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     }
 
     /* Create the target surface */
-    textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
+    TTFSurface* textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL)
     {
         return NULL;
@@ -1296,15 +1265,15 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
     that may occur. */
-    dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
 
     /* check kerning */
-    use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
+    FT_Long use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
 
     /* Load and render each character */
     textlen = strlen(text);
-    first = true;
-    xstart = 0;
+    bool first = true;
+    int xstart = 0;
     while (textlen > 0)
     {
         uint16_t c = UTF8_getch(&text, &textlen);
@@ -1313,15 +1282,15 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
             continue;
         }
 
-        error = Find_Glyph(font, c, CACHED_METRICS | CACHED_BITMAP);
+        FT_Error error = Find_Glyph(font, c, CACHED_METRICS | CACHED_BITMAP);
         if (error)
         {
             TTF_SetFTError("Couldn't find glyph", error);
             ttf_free_surface(textbuf);
             return NULL;
         }
-        glyph = font->current;
-        current = &glyph->bitmap;
+        c_glyph* glyph = font->current;
+        FT_Bitmap* current = &glyph->bitmap;
         /* Ensure the width of the pixmap is correct. On some cases,
          * freetype may report a larger pixmap than possible.*/
         width = current->width;
@@ -1355,10 +1324,10 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
             {
                 continue;
             }
-            dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
-            src = current->buffer + row * current->pitch;
+            uint8_t* dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
+            uint8_t* src = current->buffer + row * current->pitch;
 
-            for (col = width; col > 0 && dst < dst_check; --col)
+            for (unsigned int col = width; col > 0 && dst < dst_check; --col)
             {
                 *dst++ |= *src++;
             }
@@ -1390,19 +1359,9 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
 
 TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
 {
-    bool first;
-    int xstart;
     int width;
     int height;
-    TTFSurface* textbuf;
-    uint8_t* src;
-    uint8_t* dst;
-    uint8_t* dst_check;
-    unsigned int row, col;
-    FT_Bitmap* current;
-    c_glyph* glyph;
-    FT_Error error;
-    FT_Long use_kerning;
+    unsigned int row;
     FT_UInt prev_index = 0;
     size_t textlen;
 
@@ -1416,7 +1375,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
     }
 
     /* Create the target surface */
-    textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
+    TTFSurface* textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL)
     {
         return NULL;
@@ -1428,15 +1387,15 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
        that may occur. */
-    dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
 
     /* check kerning */
-    use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
+    FT_Long use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
 
     /* Load and render each character */
     textlen = strlen(text);
-    first = true;
-    xstart = 0;
+    bool first = true;
+    int xstart = 0;
     while (textlen > 0)
     {
         uint16_t c = UTF8_getch(&text, &textlen);
@@ -1445,7 +1404,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
             continue;
         }
 
-        error = Find_Glyph(font, c, CACHED_METRICS | CACHED_PIXMAP);
+        FT_Error error = Find_Glyph(font, c, CACHED_METRICS | CACHED_PIXMAP);
         if (error)
         {
             TTF_SetFTError("Couldn't find glyph", error);
@@ -1453,7 +1412,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
             return NULL;
         }
 
-        glyph = font->current;
+        c_glyph* glyph = font->current;
 
         /* Ensure the width of the pixmap is correct. On some cases,
          * freetype may report a larger pixmap than possible.*/
@@ -1478,7 +1437,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
         }
         first = false;
 
-        current = &glyph->pixmap;
+        FT_Bitmap* current = &glyph->pixmap;
         for (row = 0; row < current->rows; ++row)
         {
             /* Make sure we don't go either over, or under the
@@ -1492,10 +1451,10 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
                 continue;
             }
 
-            dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
-            src = current->buffer + row * current->pitch;
+            uint8_t* dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
+            uint8_t* src = current->buffer + row * current->pitch;
 
-            for (col = width; col > 0 && dst < dst_check; --col)
+            for (unsigned int col = width; col > 0 && dst < dst_check; --col)
             {
                 *dst++ |= *src++;
             }

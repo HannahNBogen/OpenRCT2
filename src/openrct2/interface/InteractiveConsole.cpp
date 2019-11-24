@@ -91,8 +91,7 @@ static bool invalidArguments(bool* invalid, bool arguments);
 static int32_t console_parse_int(const std::string& src, bool* valid)
 {
     utf8* end;
-    int32_t value;
-    value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
+    int32_t value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
     *valid = (*end == '\0');
     return value;
 }
@@ -100,8 +99,7 @@ static int32_t console_parse_int(const std::string& src, bool* valid)
 static double console_parse_double(const std::string& src, bool* valid)
 {
     utf8* end;
-    double value;
-    value = strtod(src.c_str(), &end);
+    double value = strtod(src.c_str(), &end);
     *valid = (*end == '\0');
     return value;
 }
@@ -1086,15 +1084,11 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         uint8_t objectType = object_entry_get_type(entry);
         if (objectType == OBJECT_TYPE_RIDE)
         {
-            // Automatically research the ride so it's supported by the game.
-            rct_ride_entry* rideEntry;
-            int32_t rideType;
-
-            rideEntry = get_ride_entry(groupIndex);
+            rct_ride_entry* rideEntry = get_ride_entry(groupIndex);
 
             for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
-                rideType = rideEntry->ride_type[j];
+                int32_t rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                     research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | groupIndex, rideEntry->category[0]);
             }

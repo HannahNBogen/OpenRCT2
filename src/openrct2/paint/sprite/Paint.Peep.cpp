@@ -26,11 +26,9 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     {
         if (peep->type == PEEP_TYPE_STAFF)
         {
-            int16_t peep_x, peep_y, peep_z;
-
-            peep_x = peep->x;
-            peep_y = peep->y;
-            peep_z = peep->z;
+            int16_t peep_x = peep->x;
+            int16_t peep_y = peep->y;
+            int16_t peep_z = peep->z;
 
             switch (peep->sprite_direction)
             {

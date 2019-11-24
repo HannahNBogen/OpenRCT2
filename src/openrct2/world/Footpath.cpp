@@ -145,14 +145,12 @@ money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
  */
 money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope)
 {
-    money32 cost;
-
     footpath_provisional_remove();
 
     auto footpathPlaceAction = FootpathPlaceAction({ x, y, z * 8 }, slope, type);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    money32 cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GA_ERROR::OK)
     {
         gFootpathProvisionalType = type;
@@ -455,9 +453,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
  */
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
         return false;
     do
@@ -654,10 +650,9 @@ static void neighbour_list_sort(rct_neighbour_list* neighbourList)
 
 static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
 {
-    TileElement* tileElement;
     int32_t slope;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1034,11 +1029,10 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
 void footpath_chain_ride_queue(
     ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction)
 {
-    TileElement *lastPathElement, *lastQueuePathElement;
     int32_t lastPathX = x, lastPathY = y, lastPathDirection = direction;
 
-    lastPathElement = nullptr;
-    lastQueuePathElement = nullptr;
+    TileElement* lastPathElement = nullptr;
+    TileElement* lastQueuePathElement = nullptr;
     int32_t z = tileElement->base_height;
     for (;;)
     {
@@ -1265,7 +1259,6 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
     int32_t junctionTolerance)
 {
-    TileElement* tileElement;
     int32_t edges, slopeDirection;
 
     x += CoordsDirectionDelta[direction].x;
@@ -1279,7 +1272,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
     if (x >= gMapSizeUnits || y >= gMapSizeUnits)
         return FOOTPATH_SEARCH_SUCCESS;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)

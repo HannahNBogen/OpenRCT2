@@ -774,9 +774,9 @@ bool track_paint_util_draw_station_covers_2(
     }
 
     int32_t imageOffset = 0;
-    LocationXYZ16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
+    LocationXYZ16 bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
-    offset = LocationXYZ16{ 0, 0, static_cast<int16_t>(height) };
+    LocationXYZ16 offset = LocationXYZ16{ 0, 0, static_cast<int16_t>(height) };
     switch (edge)
     {
         case EDGE_NE:

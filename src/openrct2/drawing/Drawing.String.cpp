@@ -42,7 +42,6 @@ int32_t gfx_get_string_width_new_lined(utf8* text)
     utf8* ch = text;
     utf8* firstCh = text;
     utf8* nextCh;
-    utf8 backup;
     int32_t codepoint;
 
     int32_t maxWidth = 0;
@@ -50,7 +49,7 @@ int32_t gfx_get_string_width_new_lined(utf8* text)
     {
         if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER)
         {
-            backup = *nextCh;
+            utf8 backup = *nextCh;
             *nextCh = 0;
             maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
             *nextCh = backup;
@@ -83,15 +82,13 @@ int32_t gfx_get_string_width(const utf8* buffer)
  */
 int32_t gfx_clip_string(utf8* text, int32_t width)
 {
-    int32_t clippedWidth;
-
     if (width < 6)
     {
         *text = 0;
         return 0;
     }
 
-    clippedWidth = gfx_get_string_width(text);
+    int32_t clippedWidth = gfx_get_string_width(text);
     if (clippedWidth <= width)
     {
         return clippedWidth;
@@ -284,10 +281,8 @@ static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint
  */
 static void colour_char_window(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
 {
-    int32_t eax;
-
     colour = NOT_TRANSLUCENT(colour);
-    eax = ColourMapA[colour].colour_11;
+    int32_t eax = ColourMapA[colour].colour_11;
     if (*current_font_flags & TEXT_DRAW_FLAG_OUTLINE)
     {
         eax |= 0x0A0A00;
@@ -422,7 +417,7 @@ void gfx_draw_string_centred_wrapped_partial(
     rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
-    int32_t numLines, fontSpriteBase, lineHeight, lineY;
+    int32_t numLines, fontSpriteBase;
     utf8* buffer = gCommonStringFormatBuffer;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -431,13 +426,13 @@ void gfx_draw_string_centred_wrapped_partial(
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t lineHeight = font_get_line_height(fontSpriteBase);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
 
     gCurrentFontFlags = 0;
-    lineY = y - ((numLines * lineHeight) / 2);
+    int32_t lineY = y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
         int32_t halfWidth = gfx_get_string_width(buffer) / 2;
@@ -684,9 +679,8 @@ static void ttf_draw_string_raw(rct_drawpixelinfo* dpi, const utf8* text, text_d
 static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
 {
     const utf8* nextCh;
-    int32_t codepoint;
 
-    codepoint = utf8_get_next(text, &nextCh);
+    int32_t codepoint = utf8_get_next(text, &nextCh);
     switch (codepoint)
     {
         case FORMAT_MOVE_X:

@@ -569,20 +569,17 @@ void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, r
  */
 void window_update_scroll_widgets(rct_window* w)
 {
-    int32_t scrollIndex, width, height, scrollPositionChanged;
-    rct_widgetindex widgetIndex;
-    rct_scroll* scroll;
-    rct_widget* widget;
+    int32_t width, height;
 
-    widgetIndex = 0;
-    scrollIndex = 0;
+    rct_widgetindex widgetIndex = 0;
+    int32_t scrollIndex = 0;
     assert(w != nullptr);
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
     {
         if (widget->type != WWT_SCROLL)
             continue;
 
-        scroll = &w->scrolls[scrollIndex];
+        rct_scroll* scroll = &w->scrolls[scrollIndex];
         width = 0;
         height = 0;
         window_get_scroll_size(w, scrollIndex, &width, &height);
@@ -597,7 +594,7 @@ void window_update_scroll_widgets(rct_window* w)
         width++;
         height++;
 
-        scrollPositionChanged = 0;
+        int32_t scrollPositionChanged = 0;
         if ((widget->content & SCROLL_HORIZONTAL) && width != scroll->h_right)
         {
             scrollPositionChanged = 1;
@@ -621,11 +618,9 @@ void window_update_scroll_widgets(rct_window* w)
 
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index)
 {
-    int32_t i, result;
-
-    result = 0;
+    int32_t result = 0;
     assert(w != nullptr);
-    for (i = 0; i < widget_index; i++)
+    for (int32_t i = 0; i < widget_index; i++)
     {
         if (w->widgets[i].type == WWT_SCROLL)
             result++;
@@ -674,9 +669,7 @@ rct_window* window_bring_to_front(rct_window* w)
 
 rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags)
 {
-    rct_window* w;
-
-    w = window_find_by_class(cls);
+    rct_window* w = window_find_by_class(cls);
     if (w != nullptr)
     {
         w->flags |= flags;
@@ -700,9 +693,7 @@ rct_window* window_bring_to_front_by_class(rct_windowclass cls)
  */
 rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    rct_window* w;
-
-    w = window_find_by_number(cls, number);
+    rct_window* w = window_find_by_number(cls, number);
     if (w != nullptr)
     {
         w->flags |= WF_WHITE_BORDER_MASK;
@@ -1267,7 +1258,6 @@ void window_move_position(rct_window* w, int32_t dx, int32_t dy)
 
 void window_resize(rct_window* w, int32_t dw, int32_t dh)
 {
-    int32_t i;
     if (dw == 0 && dh == 0)
         return;
 
@@ -1282,7 +1272,7 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     window_event_invalidate_call(w);
 
     // Update scroll widgets
-    for (i = 0; i < 3; i++)
+    for (int32_t i = 0; i < 3; i++)
     {
         w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
         w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;
@@ -1709,10 +1699,10 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
 /* Based on rct2: 0x6987ED and another version from window_park */
 void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
 {
-    int32_t i, x = w->widgets[start_tab_id].left;
+    int32_t x = w->widgets[start_tab_id].left;
     int32_t tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
 
-    for (i = start_tab_id; i <= end_tab_id; i++)
+    for (int32_t i = start_tab_id; i <= end_tab_id; i++)
     {
         if (!(w->disabled_widgets & (1LL << i)))
         {

@@ -1891,9 +1891,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -1940,9 +1938,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -2169,9 +2165,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -2230,9 +2224,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -2291,8 +2283,6 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
     uint8_t tunnelType;
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
@@ -2306,7 +2296,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -2353,8 +2343,6 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
     uint8_t tunnelType;
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
@@ -2368,7 +2356,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height);
@@ -2469,9 +2457,7 @@ static void junior_rc_left_bank_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_left_bank[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_left_bank[direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
         session, image_id, 0, 0, junior_rc_left_bank_bound_lengths[direction].x, junior_rc_left_bank_bound_lengths[direction].y,
         (int8_t)junior_rc_left_bank_bound_lengths[direction].z, height, junior_rc_left_bank_bound_offsets[direction].x,
@@ -3656,9 +3642,7 @@ static void junior_rc_brake_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
-    image_id = junior_rc_track_pieces_brake[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_brake[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98196C(session, image_id, 6, 0, 20, 32, 1, height);
@@ -3691,11 +3675,9 @@ static void junior_rc_block_brake_paint_setup(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t image_id;
-
     bool isBraked = tileElement->AsTrack()->BlockBrakeClosed();
 
-    image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)
     {
         sub_98196C(session, image_id, 6, 0, 20, 32, 1, height);

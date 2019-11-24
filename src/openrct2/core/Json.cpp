@@ -55,9 +55,8 @@ namespace Json
 
     json_t* FromString(std::string_view raw)
     {
-        json_t* root;
         json_error_t error;
-        root = json_loadb(raw.data(), raw.size(), 0, &error);
+        json_t* root = json_loadb(raw.data(), raw.size(), 0, &error);
         if (root == nullptr)
         {
             throw JsonException(&error);

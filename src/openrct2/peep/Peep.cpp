@@ -404,18 +404,14 @@ int32_t peep_get_staff_count()
  */
 void peep_update_all()
 {
-    int32_t i;
-    uint16_t spriteIndex;
-    Peep* peep;
-
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
-    i = 0;
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
+    int32_t i = 0;
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        peep = &(get_sprite(spriteIndex)->peep);
+        Peep* peep = &(get_sprite(spriteIndex)->peep);
         spriteIndex = peep->next;
 
         if ((uint32_t)(i & 0x7F) != (gCurrentTicks & 0x7F))
@@ -1353,10 +1349,8 @@ void peep_stop_crowd_noise()
  */
 void peep_update_crowd_noise()
 {
-    rct_viewport* viewport;
     uint16_t spriteIndex;
     Peep* peep;
-    int32_t visiblePeeps;
 
     if (gGameSoundsOff)
         return;
@@ -1367,12 +1361,12 @@ void peep_update_crowd_noise()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    viewport = g_music_tracking_viewport;
+    rct_viewport* viewport = g_music_tracking_viewport;
     if (viewport == nullptr)
         return;
 
     // Count the number of peeps visible
-    visiblePeeps = 0;
+    int32_t visiblePeeps = 0;
 
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
@@ -1407,11 +1401,9 @@ void peep_update_crowd_noise()
     }
     else
     {
-        int32_t volume;
-
         // Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
-        volume = 120 - std::min(visiblePeeps, 120);
+        int32_t volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
         volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
 

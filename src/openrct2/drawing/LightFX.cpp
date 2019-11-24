@@ -510,9 +510,6 @@ void lightfx_render_lights_to_frontbuffer()
         const uint8_t* bufReadBase = nullptr;
         uint8_t* bufWriteBase = (uint8_t*)_light_rendered_buffer_front;
         uint32_t bufReadWidth, bufReadHeight;
-        int32_t bufWriteX, bufWriteY;
-        int32_t bufWriteWidth, bufWriteHeight;
-        uint32_t bufReadSkip, bufWriteSkip;
 
         lightlist_entry* entry = &_LightListFront[light];
 
@@ -573,11 +570,11 @@ void lightfx_render_lights_to_frontbuffer()
                 continue;
         }
 
-        bufWriteX = inRectCentreX - bufReadWidth / 2;
-        bufWriteY = inRectCentreY - bufReadHeight / 2;
+        int32_t bufWriteX = inRectCentreX - bufReadWidth / 2;
+        int32_t bufWriteY = inRectCentreY - bufReadHeight / 2;
 
-        bufWriteWidth = bufReadWidth;
-        bufWriteHeight = bufReadHeight;
+        int32_t bufWriteWidth = bufReadWidth;
+        int32_t bufWriteHeight = bufReadHeight;
 
         if (bufWriteX < 0)
         {
@@ -624,8 +621,8 @@ void lightfx_render_lights_to_frontbuffer()
 
         _lightPolution_back += (bufWriteWidth * bufWriteHeight) / 256;
 
-        bufReadSkip = bufReadWidth - bufWriteWidth;
-        bufWriteSkip = _pixelInfo.width - bufWriteWidth;
+        uint32_t bufReadSkip = bufReadWidth - bufWriteWidth;
+        uint32_t bufWriteSkip = _pixelInfo.width - bufWriteWidth;
 
         if (entry->lightIntensity == 0xFF)
         {
@@ -774,11 +771,9 @@ void lightfx_add_lights_magic_vehicles()
                 break;
             q = vehicle->next_vehicle_on_train;
 
-            int16_t place_x, place_y, place_z;
-
-            place_x = vehicle->x;
-            place_y = vehicle->y;
-            place_z = vehicle->z;
+            int16_t place_x = vehicle->x;
+            int16_t place_y = vehicle->y;
+            int16_t place_z = vehicle->z;
 
             static constexpr const int16_t offsetLookup[] = {
                 10,  10,  9,  8,  7,  6,  4,  2,  0, -2, -4, -6, -7, -8, -9, -10,

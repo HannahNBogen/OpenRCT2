@@ -215,14 +215,11 @@ static void sprite_file_close()
 
 static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
 {
-    rct_g1_element* spriteHeader;
     rct_drawpixelinfo dpi;
-    uint8_t* pixels;
-    int32_t pixelBufferSize;
 
-    spriteHeader = &spriteFileEntries[spriteIndex];
-    pixelBufferSize = spriteHeader->width * spriteHeader->height;
-    pixels = (uint8_t*)malloc(pixelBufferSize);
+    rct_g1_element* spriteHeader = &spriteFileEntries[spriteIndex];
+    int32_t pixelBufferSize = spriteHeader->width * spriteHeader->height;
+    uint8_t* pixels = (uint8_t*)malloc(pixelBufferSize);
     std::fill_n(pixels, pixelBufferSize, 0x00);
 
     dpi.bits = pixels;

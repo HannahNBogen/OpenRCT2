@@ -49,7 +49,6 @@ static void top_spin_paint_vehicle(
     if (ride == nullptr)
         return;
 
-    uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the tileElement that
     // is assigned to the drawings.
     const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
@@ -73,9 +72,9 @@ static void top_spin_paint_vehicle(
         seatRotation = vehicle->bank_rotation;
     }
 
-    boundBoxOffsetX = al + 16;
-    boundBoxOffsetY = cl + 16;
-    boundBoxOffsetZ = height;
+    uint16_t boundBoxOffsetX = al + 16;
+    uint16_t boundBoxOffsetY = cl + 16;
+    uint16_t boundBoxOffsetZ = height;
 
     // di
     uint8_t lengthX = 24;

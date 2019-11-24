@@ -95,8 +95,7 @@ void news_item_init_queue()
 
 static void news_item_tick_current()
 {
-    int32_t ticks;
-    ticks = ++news_item_get(0)->Ticks;
+    int32_t ticks = ++news_item_get(0)->Ticks;
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
@@ -143,7 +142,6 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-    int32_t i;
     NewsItem* newsItems = gNewsItems;
 
     // Check if there is a current message
@@ -151,7 +149,7 @@ void news_item_close_current()
         return;
 
     // Find an available history news item slot for current message
-    i = news_item_get_new_history_slot();
+    int32_t i = news_item_get_new_history_slot();
 
     // Set the history news item slot to the current news item
     newsItems[i] = newsItems[0];
@@ -330,7 +328,6 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
  */
 void news_item_open_subject(int32_t type, int32_t subject)
 {
-    Peep* peep;
     rct_window* window;
 
     switch (type)
@@ -345,7 +342,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
         case NEWS_ITEM_PEEP_ON_RIDE:
         case NEWS_ITEM_PEEP:
         {
-            peep = GET_PEEP(subject);
+            Peep* peep = GET_PEEP(subject);
 
             auto intent = Intent(WC_PEEP);
             intent.putExtra(INTENT_EXTRA_PEEP, peep);

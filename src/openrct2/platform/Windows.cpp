@@ -152,14 +152,12 @@ bool platform_directory_delete(const utf8* path)
 
 bool platform_lock_single_instance()
 {
-    HANDLE mutex, status;
-
     // Check if operating system mutex exists
-    mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+    HANDLE mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
     if (mutex == nullptr)
     {
         // Create new mutex
-        status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        HANDLE status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
             log_error("unable to create mutex");
 
@@ -203,10 +201,8 @@ bool platform_file_delete(const utf8* path)
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
 {
-    wchar_t* wSteamPath;
     HKEY hKey;
     DWORD type, size;
-    LRESULT result;
 
     if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
         return false;
@@ -218,8 +214,8 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
     }
 
-    wSteamPath = (wchar_t*)malloc(size);
-    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
+    wchar_t* wSteamPath = (wchar_t*)malloc(size);
+    LRESULT result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
     if (result == ERROR_SUCCESS)
     {
         auto utf8SteamPath = String::ToUtf8(wSteamPath);
@@ -564,8 +560,6 @@ static bool windows_setup_file_association(
     wchar_t exePathW[MAX_PATH];
     wchar_t dllPathW[MAX_PATH];
 
-    [[maybe_unused]] int32_t printResult;
-
     GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
 
@@ -603,7 +597,7 @@ static bool windows_setup_file_association(
     }
     // [hRootKey\OpenRCT2.ext\DefaultIcon]
     wchar_t szIconW[MAX_PATH];
-    printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
+    int32_t printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
     assert(printResult >= 0);
     if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
     {

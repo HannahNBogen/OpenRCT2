@@ -1329,19 +1329,16 @@ void vehicle_sounds_update()
  */
 void vehicle_update_all()
 {
-    uint16_t sprite_index;
-    rct_vehicle* vehicle;
-
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
+    uint16_t sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
-        vehicle = GET_VEHICLE(sprite_index);
+        rct_vehicle* vehicle = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
 
         vehicle_update(vehicle);
@@ -1812,10 +1809,9 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
     if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
         return;
 
-    int16_t x, y, z;
-    x = vehicle->x;
-    y = vehicle->y;
-    z = vehicle->z;
+    int16_t x = vehicle->x;
+    int16_t y = vehicle->y;
+    int16_t z = vehicle->z;
 
     if (x == LOCATION_NULL)
     {
@@ -2845,10 +2841,9 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
      */
 
     int32_t direction = tileElement->GetDirectionWithOffset(1);
-    int32_t spaceBetween;
     int32_t maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
 
-    spaceBetween = maxCheckDistance;
+    int32_t spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
         x += CoordsDirectionDelta[direction].x;
@@ -3979,9 +3974,8 @@ static void vehicle_update_arriving(rct_vehicle* vehicle)
         }
     }
 
-    uint32_t flags;
 loc_6D8E36:
-    flags = vehicle_update_track_motion(vehicle, nullptr);
+    uint32_t flags = vehicle_update_track_motion(vehicle, nullptr);
     if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
     {
         vehicle_update_collision_setup(vehicle);
@@ -4333,7 +4327,6 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
             vehicle->var_35++;
             int32_t x = (vehicle->boat_location.x * 32) + 16;
             int32_t y = (vehicle->boat_location.y * 32) + 16;
-            int32_t z;
             uint8_t bl;
 
             x -= vehicle->x;
@@ -4438,7 +4431,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
             int32_t edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
             x = vehicle->x + Unk9A36C4[edi].x;
             y = vehicle->y + Unk9A36C4[edi].y;
-            z = vehicle->z;
+            int32_t z = vehicle->z;
             if (vehicle_update_motion_collision_detection(vehicle, x, y, z, nullptr))
             {
                 vehicle->remaining_distance = 0;
@@ -5117,13 +5110,11 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle)
  */
 static void vehicle_update_showing_film(rct_vehicle* vehicle)
 {
-    int32_t currentTime, totalTime;
-
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = RideFilmLength[vehicle->sub_state];
-    currentTime = vehicle->current_time + 1;
+    int32_t totalTime = RideFilmLength[vehicle->sub_state];
+    int32_t currentTime = vehicle->current_time + 1;
     if (currentTime <= totalTime)
     {
         vehicle->current_time = currentTime;
@@ -5595,12 +5586,10 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
  */
 static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle)
 {
-    uint32_t r;
     uint16_t spriteIndex;
-    rct_ride_entry* rideEntry;
     rct_vehicle* vehicle2;
 
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
@@ -5650,7 +5639,7 @@ static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle)
 produceScream:
     if (vehicle->scream_sound_id == SoundId::Null)
     {
-        r = scenario_rand();
+        uint32_t r = scenario_rand();
         if (totalNumPeeps >= (int32_t)(r % 16))
         {
             switch (vehicleEntry->sound_range)
@@ -6231,11 +6220,9 @@ void vehicle_set_map_toolbar(const rct_vehicle* vehicle)
 
 rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle)
 {
-    rct_vehicle* prevVehicle;
-
     for (;;)
     {
-        prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+        rct_vehicle* prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             break;
 
@@ -9844,12 +9831,11 @@ rct_ride_entry_vehicle* vehicle_get_vehicle_entry(const rct_vehicle* vehicle)
 
 int32_t vehicle_get_total_num_peeps(const rct_vehicle* vehicle)
 {
-    uint16_t spriteIndex;
     int32_t numPeeps = 0;
     for (;;)
     {
         numPeeps += vehicle->num_peeps;
-        spriteIndex = vehicle->next_vehicle_on_train;
+        uint16_t spriteIndex = vehicle->next_vehicle_on_train;
         if (spriteIndex == SPRITE_INDEX_NULL)
             break;
 
@@ -9895,11 +9881,11 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
     CoordsXYE xyElement;
     track_begin_end output;
-    int32_t z, direction;
+    int32_t direction;
 
     xyElement.x = frontVehicle->track_x;
     xyElement.y = frontVehicle->track_y;
-    z = frontVehicle->track_z;
+    int32_t z = frontVehicle->track_z;
     xyElement.element = map_get_track_element_at_of_type_seq(
         frontVehicle->track_x, frontVehicle->track_y, frontVehicle->track_z >> 3, frontVehicle->track_type >> 2, 0);
 

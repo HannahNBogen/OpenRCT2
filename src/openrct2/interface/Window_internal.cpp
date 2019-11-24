@@ -11,7 +11,6 @@ void rct_window::SetLocation(int32_t newX, int32_t newY, int32_t newZ)
 void rct_window::ScrollToViewport()
 {
     int32_t newX, newY, newZ;
-    rct_window* mainWindow;
 
     // In original checked to make sure x and y were not -1 as well.
     if (viewport == nullptr || viewport_focus_coordinates.y == -1)
@@ -31,7 +30,7 @@ void rct_window::ScrollToViewport()
         newZ = viewport_focus_coordinates.z;
     }
 
-    mainWindow = window_get_main();
+    rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
         window_scroll_to_location(mainWindow, newX, newY, newZ);
 }

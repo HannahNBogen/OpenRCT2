@@ -225,8 +225,6 @@ static int32_t guest_surface_path_finding(Peep* peep)
  */
 static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement* pathElement, uint8_t chosenDirection)
 {
-    TileElement* nextTileElement;
-
     if (pathElement->IsSloped())
     {
         if (pathElement->GetSlopeDirection() == chosenDirection)
@@ -236,7 +234,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
     }
 
     loc += TileDirectionDelta[chosenDirection];
-    nextTileElement = map_get_first_element_at(loc.x, loc.y);
+    TileElement* nextTileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
         if (nextTileElement->IsGhost())
@@ -277,14 +275,13 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  */
 static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, uint8_t chosenDirection, ride_id_t* outRideIndex, int32_t level)
 {
-    TileElement* tileElement;
     int32_t direction;
 
     if (level > 25)
         return PATH_SEARCH_LIMIT_REACHED;
 
     loc += TileDirectionDelta[chosenDirection];
-    tileElement = map_get_first_element_at(loc.x, loc.y);
+    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
     if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
@@ -1977,8 +1974,8 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
+            ride_id_t rideIndex;
+            ride_id_t pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
                 case PATH_SEARCH_DEAD_END:

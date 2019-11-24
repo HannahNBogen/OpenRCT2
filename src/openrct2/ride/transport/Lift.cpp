@@ -36,9 +36,7 @@ static constexpr const uint32_t lift_cage_sprites[][2] = {
 
 static void paint_lift_cage(paint_session* session, int8_t index, uint32_t colourFlags, int32_t height, uint8_t rotation)
 {
-    uint32_t imageId;
-
-    imageId = lift_cage_sprites[1 + index][0] | colourFlags;
+    uint32_t imageId = lift_cage_sprites[1 + index][0] | colourFlags;
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
 
     imageId = lift_cage_sprites[1 + index][1] | colourFlags;

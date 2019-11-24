@@ -31,7 +31,6 @@ void vehicle_visual_observation_tower(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    int32_t image_id;
     int32_t baseImage_id = (vehicle->restraints_position / 64);
     if (vehicle->restraints_position >= 64)
     {
@@ -54,7 +53,7 @@ void vehicle_visual_observation_tower(
         baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
     }
 
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {
         image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;

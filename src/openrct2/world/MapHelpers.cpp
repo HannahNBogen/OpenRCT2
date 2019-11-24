@@ -19,17 +19,17 @@
  */
 int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 {
-    int32_t i, x, y, count, doubleCorner, raisedLand = 0;
-    uint8_t highest, cornerHeights[4];
-    for (y = t; y < b; y++)
+    int32_t i, raisedLand = 0;
+    uint8_t cornerHeights[4];
+    for (int32_t y = t; y < b; y++)
     {
-        for (x = l; x < r; x++)
+        for (int32_t x = l; x < r; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
             surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
 
             // Raise to edge height - 2
-            highest = surfaceElement->base_height;
+            uint8_t highest = surfaceElement->base_height;
             highest = std::max(highest, map_get_surface_element_at(x - 1, y + 0)->base_height);
             highest = std::max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
             highest = std::max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
@@ -41,7 +41,7 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
             }
 
             // Check corners
-            doubleCorner = -1;
+            int32_t doubleCorner = -1;
             cornerHeights[0] = map_get_surface_element_at(x - 1, y - 1)->base_height;
             cornerHeights[1] = map_get_surface_element_at(x + 1, y - 1)->base_height;
             cornerHeights[2] = map_get_surface_element_at(x + 1, y + 1)->base_height;
@@ -52,7 +52,7 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 
             if (highest >= surfaceElement->base_height + 4)
             {
-                count = 0;
+                int32_t count = 0;
                 int32_t canCompensate = 1;
                 for (i = 0; i < 4; i++)
                     if (cornerHeights[i] == highest)

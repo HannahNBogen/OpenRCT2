@@ -1263,7 +1263,6 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
         {
             uint8_t flags;
             money32 cost = 0;
-            uint16_t maze_entry;
             switch (maze_element.type)
             {
                 case MAZE_ELEMENT_TYPE_ENTRANCE:
@@ -1337,7 +1336,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                     }
                     break;
                 default:
-                    maze_entry = rol16(maze_element.maze_entry, rotation * 4);
+                    uint16_t maze_entry = rol16(maze_element.maze_entry, rotation * 4);
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {

@@ -325,9 +325,9 @@ void research_finish_item(ResearchItem* researchItem)
  */
 void research_update()
 {
-    int32_t editorScreenFlags, researchLevel, currentResearchProgress;
+    int32_t researchLevel;
 
-    editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
+    int32_t editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
     if (gScreenFlags & editorScreenFlags)
     {
         return;
@@ -347,7 +347,7 @@ void research_update()
         researchLevel = gResearchFundingLevel;
     }
 
-    currentResearchProgress = gResearchProgress;
+    int32_t currentResearchProgress = gResearchProgress;
     currentResearchProgress += _researchRate[researchLevel];
     if (currentResearchProgress <= 0xFFFF)
     {

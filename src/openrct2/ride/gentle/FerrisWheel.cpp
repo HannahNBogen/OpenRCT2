@@ -50,8 +50,6 @@ static ferris_wheel_bound_box ferris_wheel_data[] = {
 static void paint_ferris_wheel_structure(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    uint32_t imageId, baseImageId;
-
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     auto ride = get_ride(rideIndex);
@@ -68,7 +66,7 @@ static void paint_ferris_wheel_structure(
 
     height += 7;
 
-    baseImageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -92,7 +90,7 @@ static void paint_ferris_wheel_structure(
 
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
 
-    imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);

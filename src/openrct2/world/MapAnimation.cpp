@@ -122,9 +122,7 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -154,12 +152,9 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
  */
 static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
     rct_sprite* sprite;
-    Peep* peep;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -169,7 +164,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
         if (tileElement->IsGhost())
             continue;
 
-        sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 
@@ -198,7 +193,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
                     if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
                         continue;
 
-                    peep = &sprite->peep;
+                    Peep* peep = &sprite->peep;
                     if (peep->state != PEEP_STATE_WALKING)
                         continue;
                     if (peep->z != tileElement->base_height * 8)
@@ -228,9 +223,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -256,9 +249,7 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -283,9 +274,7 @@ static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32
  */
 static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -310,9 +299,7 @@ static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t 
  */
 static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement == nullptr)
@@ -350,9 +337,7 @@ static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int
  */
 static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -377,9 +362,7 @@ static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32
  */
 static bool map_animation_invalidate_track_spinningtunnel(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -414,9 +397,7 @@ static bool map_animation_invalidate_remove(
  */
 static bool map_animation_invalidate_banner(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -438,11 +419,8 @@ static bool map_animation_invalidate_banner(int32_t x, int32_t y, int32_t baseZ)
  */
 static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
-
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -450,7 +428,7 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
-        sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+        rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
         if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             int32_t z = tileElement->base_height * 8;
@@ -468,14 +446,11 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
-
     if (gCurrentTicks & 1)
         return false;
 
     bool removeAnimation = true;
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -483,7 +458,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = tileElement->AsWall()->GetEntry();
+        rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
         if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
             continue;
 
@@ -531,11 +506,8 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
  */
 static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
-
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -543,7 +515,7 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = tileElement->AsWall()->GetEntry();
+        rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
 
         if (!sceneryEntry
             || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED)

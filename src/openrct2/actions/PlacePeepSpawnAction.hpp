@@ -113,10 +113,8 @@ public:
             map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
         }
 
-        // Shift the spawn point to the middle of the tile
-        int32_t middleX, middleY;
-        middleX = _location.x + 16 + (word_981D6C[_location.direction].x * 15);
-        middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
+        int32_t middleX = _location.x + 16 + (word_981D6C[_location.direction].x * 15);
+        int32_t middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
 
         // Set peep spawn
         PeepSpawn spawn;

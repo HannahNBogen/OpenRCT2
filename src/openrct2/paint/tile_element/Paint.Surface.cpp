@@ -749,7 +749,7 @@ static void viewport_surface_draw_tile_side_top(
     if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
         terrain = TERRAIN_EDGE_ROCK;
 
-    int16_t al, ah, cl, ch, dl = 0, waterHeight;
+    int16_t al, ah, cl, ch, dl = 0;
 
     sLocationXY8 offset = { 0, 0 };
     sLocationXY8 bounds = { 0, 0 };
@@ -795,7 +795,7 @@ static void viewport_surface_draw_tile_side_top(
     {
         if (isWater)
         {
-            waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
+            int16_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
             if (dl == waterHeight)
             {
                 return;

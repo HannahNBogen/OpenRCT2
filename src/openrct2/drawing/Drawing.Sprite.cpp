@@ -779,7 +779,6 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 void FASTCALL
     gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
 {
-    int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     auto imgColour = gfx_get_g1_element(colourImage & 0x7FFFF);
     if (imgMask == nullptr || imgColour == nullptr)
@@ -801,16 +800,16 @@ void FASTCALL
         return;
     }
 
-    width = std::min(imgMask->width, imgColour->width);
-    height = std::min(imgMask->height, imgColour->height);
+    int32_t width = std::min(imgMask->width, imgColour->width);
+    int32_t height = std::min(imgMask->height, imgColour->height);
 
     x += imgMask->x_offset;
     y += imgMask->y_offset;
 
-    left = std::max<int32_t>(dpi->x, x);
-    top = std::max<int32_t>(dpi->y, y);
-    right = std::min(dpi->x + dpi->width, x + width);
-    bottom = std::min(dpi->y + dpi->height, y + height);
+    int32_t left = std::max<int32_t>(dpi->x, x);
+    int32_t top = std::max<int32_t>(dpi->y, y);
+    int32_t right = std::min(dpi->x + dpi->width, x + width);
+    int32_t bottom = std::min(dpi->y + dpi->height, y + height);
 
     width = right - left;
     height = bottom - top;

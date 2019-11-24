@@ -119,8 +119,7 @@ public:
 
         uint32_t flags = GetFlags();
 
-        CoordsXYZD parkEntrance;
-        parkEntrance = _loc;
+        CoordsXYZD parkEntrance = _loc;
 
         gParkEntrances.push_back(parkEntrance);
 

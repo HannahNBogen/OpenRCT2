@@ -41,7 +41,6 @@ void vehicle_visual_roto_drop(
         imageFlags = CONSTRUCTION_MARKER;
     }
 
-    int32_t image_id;
     int32_t baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
@@ -50,7 +49,7 @@ void vehicle_visual_roto_drop(
     }
 
     // Draw back:
-    image_id = baseImage_id | imageFlags;
+    int32_t image_id = baseImage_id | imageFlags;
     sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
 
     // Draw front:

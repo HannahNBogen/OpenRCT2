@@ -277,7 +277,7 @@ static void chat_clear_input()
 // But this adjusts the initial Y coordinate depending of the number of lines.
 int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width)
 {
-    int32_t fontSpriteBase, lineHeight, lineY, numLines;
+    int32_t fontSpriteBase, numLines;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
@@ -287,7 +287,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t lineHeight = font_get_line_height(fontSpriteBase);
 
     gCurrentFontFlags = 0;
 
@@ -297,7 +297,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
         return (numLines * lineHeight); // Skip drawing, return total height.
     }
 
-    lineY = y;
+    int32_t lineY = y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
         gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight));
@@ -311,7 +311,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
 // Almost the same as gfx_draw_string_left_wrapped
 int32_t chat_string_wrapped_get_height(void* args, int32_t width)
 {
-    int32_t fontSpriteBase, lineHeight, lineY, numLines;
+    int32_t fontSpriteBase, numLines;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
@@ -320,11 +320,11 @@ int32_t chat_string_wrapped_get_height(void* args, int32_t width)
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t lineHeight = font_get_line_height(fontSpriteBase);
 
     gCurrentFontFlags = 0;
 
-    lineY = 0;
+    int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)
     {
         buffer = get_string_end(buffer) + 1;

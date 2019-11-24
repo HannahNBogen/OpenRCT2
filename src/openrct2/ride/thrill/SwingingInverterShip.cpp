@@ -126,7 +126,6 @@ static void paint_swinging_inverter_ship(
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
-    uint32_t imageId;
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
@@ -141,7 +140,7 @@ static void paint_swinging_inverter_ship(
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
+        uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
 
         switch (direction)

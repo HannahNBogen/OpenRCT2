@@ -58,8 +58,6 @@ static constexpr const uint32_t pirate_ship_frame_sprites[][2] = {
 static void paint_pirate_ship_structure(
     paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    uint32_t imageId, baseImageId;
-
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -78,7 +76,7 @@ static void paint_pirate_ship_structure(
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
+    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = (int8_t)vehicle->vehicle_sprite_type;
@@ -105,7 +103,7 @@ static void paint_pirate_ship_structure(
 
     pirate_ship_bound_box bounds = pirate_ship_data[direction];
 
-    imageId = pirate_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = pirate_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);

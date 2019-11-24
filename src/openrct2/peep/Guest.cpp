@@ -3668,7 +3668,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     if (ride == nullptr)
         return;
 
-    int16_t actionZ, xy_distance;
+    int16_t xy_distance;
 
     auto ride_entry = ride->GetRideEntry();
 
@@ -3690,7 +3690,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             sub_state = PEEP_RIDE_FREE_VEHICLE_CHECK;
         }
 
-        actionZ = ride->stations[current_ride_station].Height * 8;
+        int16_t actionZ = ride->stations[current_ride_station].Height * 8;
 
         distanceThreshold += 4;
         if (xy_distance < distanceThreshold)
@@ -6412,11 +6412,9 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement* tileElement;
-
     auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
-    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;

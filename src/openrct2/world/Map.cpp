@@ -402,18 +402,16 @@ void map_strip_ghost_flag_from_elements()
  */
 void map_update_tile_pointers()
 {
-    int32_t i, x, y;
-
-    for (i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
         gTileElementTilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
     }
 
     TileElement* tileElement = gTileElements;
     TileElement** tile = gTileElementTilePointers;
-    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             *tile++ = tileElement;
             while (!(tileElement++)->IsLastForTile())
@@ -456,12 +454,10 @@ int16_t tile_element_height(const CoordsXY& loc)
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
 
-    uint8_t xl, yl; // coordinates across this tile
-
     uint8_t TILE_SIZE = 31;
 
-    xl = loc.x & 0x1f;
-    yl = loc.y & 0x1f;
+    uint8_t xl = loc.x & 0x1f;
+    uint8_t yl = loc.y & 0x1f;
 
     // Slope logic:
     // Each of the four bits in slope represents that corner being raised
@@ -1046,15 +1042,15 @@ static void map_get_bounding_box(const MapRange& _range, int32_t* left, int32_t*
  */
 void map_invalidate_selection_rect()
 {
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
+    int32_t left, right, top, bottom;
 
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
         return;
 
-    x0 = gMapSelectPositionA.x + 16;
-    y0 = gMapSelectPositionA.y + 16;
-    x1 = gMapSelectPositionB.x + 16;
-    y1 = gMapSelectPositionB.y + 16;
+    int32_t x0 = gMapSelectPositionA.x + 16;
+    int32_t y0 = gMapSelectPositionA.y + 16;
+    int32_t x1 = gMapSelectPositionB.x + 16;
+    int32_t y1 = gMapSelectPositionB.y + 16;
     map_get_bounding_box({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
     left -= 32;
     right += 32;
@@ -1155,7 +1151,6 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  */
 TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadrants)
 {
-    TileElement *originalTileElement, *newTileElement, *insertedElement;
     bool isLastForTile = false;
 
     if (!map_check_free_elements_and_reorganise(1))
@@ -1164,8 +1159,8 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
         return nullptr;
     }
 
-    newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x];
+    TileElement* newTileElement = gNextFreeTileElement;
+    TileElement* originalTileElement = gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x];
 
     // Set tile index pointer to point to new element block
     gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x] = newTileElement;
@@ -1189,7 +1184,7 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     }
 
     // Insert new map element
-    insertedElement = newTileElement;
+    TileElement* insertedElement = newTileElement;
     newTileElement->type = 0;
     newTileElement->base_height = loc.z;
     newTileElement->flags = 0;
@@ -1223,11 +1218,10 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
  */
 void map_obstruction_set_error_text(TileElement* tileElement)
 {
-    rct_string_id errorStringId;
     Ride* ride;
     rct_scenery_entry* sceneryEntry;
 
-    errorStringId = STR_OBJECT_IN_THE_WAY;
+    rct_string_id errorStringId = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_SURFACE:
@@ -1292,8 +1286,8 @@ bool map_can_construct_with_clear_at(
     int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     money32* price, uint8_t crossingMode)
 {
-    int32_t al, ah, bh, cl, ch, water_height;
-    al = ah = bh = cl = ch = water_height = 0;
+    int32_t ah, bh, cl, ch, water_height;
+    int32_t al = ah = bh = cl = ch = water_height = 0;
     uint8_t slope = 0;
 
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
@@ -1605,9 +1599,9 @@ static void map_extend_boundary_surface_extend_tile(const SurfaceElement& source
 void map_extend_boundary_surface()
 {
     SurfaceElement *existingTileElement, *newTileElement;
-    int32_t x, y;
+    int32_t x;
 
-    y = gMapSize - 2;
+    int32_t y = gMapSize - 2;
     for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
         existingTileElement = map_get_surface_element_at(x, y - 1);
@@ -1729,13 +1723,11 @@ static void clear_elements_at(const CoordsXY& loc)
 
 int32_t map_get_highest_z(const CoordsXY& loc)
 {
-    uint32_t z;
-
     auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
         return -1;
 
-    z = surfaceElement->base_height * 8;
+    uint32_t z = surfaceElement->base_height * 8;
 
     // Raise z so that is above highest point of land and water on tile
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
@@ -1871,16 +1863,14 @@ bool map_large_scenery_get_origin(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     LargeSceneryElement** outElement)
 {
-    rct_scenery_entry* sceneryEntry;
-    rct_large_scenery_tile* tile;
     int16_t offsetX, offsetY;
 
     auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
     if (tileElement == nullptr)
         return false;
 
-    sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->large_scenery.tiles[sequence];
+    rct_scenery_entry* sceneryEntry = tileElement->GetEntry();
+    rct_large_scenery_tile* tile = &sceneryEntry->large_scenery.tiles[sequence];
 
     offsetX = tile->x_offset;
     offsetY = tile->y_offset;
@@ -1902,8 +1892,6 @@ bool sign_set_colour(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    rct_scenery_entry* sceneryEntry;
-    rct_large_scenery_tile *sceneryTiles, *tile;
     int16_t offsetX, offsetY;
     int32_t x0, y0, z0;
 
@@ -1912,12 +1900,12 @@ bool sign_set_colour(
         return false;
     }
 
-    sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->large_scenery.tiles;
+    rct_scenery_entry* sceneryEntry = tileElement->GetEntry();
+    rct_large_scenery_tile* sceneryTiles = sceneryEntry->large_scenery.tiles;
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (rct_large_scenery_tile* tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
         offsetX = tile->x_offset;
         offsetY = tile->y_offset;
@@ -1956,16 +1944,14 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
     if (gOpenRCT2Headless)
         return;
 
-    int32_t x1, y1, x2, y2;
-
     x += 16;
     y += 16;
     auto screenCoord = translate_3d_to_2d(get_current_rotation(), { x, y });
 
-    x1 = screenCoord.x - 32;
-    y1 = screenCoord.y - 32 - z1;
-    x2 = screenCoord.x + 32;
-    y2 = screenCoord.y + 32 - z0;
+    int32_t x1 = screenCoord.x - 32;
+    int32_t y1 = screenCoord.y - 32 - z1;
+    int32_t x2 = screenCoord.x + 32;
+    int32_t y2 = screenCoord.y + 32 - z0;
 
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
     {
@@ -2020,13 +2006,13 @@ void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement)
 
 void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs)
 {
-    int32_t x0, y0, x1, y1, left, right, top, bottom;
+    int32_t left, right, top, bottom;
 
-    x0 = mins.x + 16;
-    y0 = mins.y + 16;
+    int32_t x0 = mins.x + 16;
+    int32_t y0 = mins.y + 16;
 
-    x1 = maxs.x + 16;
-    y1 = maxs.y + 16;
+    int32_t x1 = maxs.x + 16;
+    int32_t y1 = maxs.y + 16;
 
     map_get_bounding_box({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
 

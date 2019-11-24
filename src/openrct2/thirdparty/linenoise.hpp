@@ -937,8 +937,6 @@ DWORD consolemodeIn = 0;
 inline int win32read(int *c) {
     DWORD foo;
     INPUT_RECORD b;
-    KEY_EVENT_RECORD e;
-    BOOL altgr;
 
     while (1) {
         if (!ReadConsoleInput(hIn, &b, 1, &foo)) return 0;
@@ -946,10 +944,10 @@ inline int win32read(int *c) {
 
         if (b.EventType == KEY_EVENT && b.Event.KeyEvent.bKeyDown) {
 
-            e = b.Event.KeyEvent;
+            KEY_EVENT_RECORD e = b.Event.KeyEvent;
             *c = b.Event.KeyEvent.uChar.AsciiChar;
 
-            altgr = e.dwControlKeyState & (LEFT_CTRL_PRESSED | RIGHT_ALT_PRESSED);
+            BOOL altgr = e.dwControlKeyState & (LEFT_CTRL_PRESSED | RIGHT_ALT_PRESSED);
 
             if (e.dwControlKeyState & (LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED) && !altgr) {
 
@@ -1138,8 +1136,7 @@ static int unicodeWideCharTableSize = sizeof(unicodeWideCharTable) / sizeof(unic
 
 static int unicodeIsWideChar(unsigned long cp)
 {
-    int i;
-    for (i = 0; i < unicodeWideCharTableSize; i++) {
+    for (int i = 0; i < unicodeWideCharTableSize; i++) {
         if (unicodeWideCharTable[i][0] <= cp && cp <= unicodeWideCharTable[i][1]) {
             return 1;
         }
@@ -1351,8 +1348,7 @@ static int unicodeCombiningCharTableSize = sizeof(unicodeCombiningCharTable) / s
 
 inline int unicodeIsCombiningChar(unsigned long cp)
 {
-    int i;
-    for (i = 0; i < unicodeCombiningCharTableSize; i++) {
+    for (int i = 0; i < unicodeCombiningCharTableSize; i++) {
         if (unicodeCombiningCharTable[i] == cp) {
             return 1;
         }
@@ -1882,13 +1878,10 @@ inline void refreshMultiLine(struct linenoiseState *l) {
     char seq[64];
     int pcolwid = unicodeColumnPos(l->prompt.c_str(), static_cast<int>(l->prompt.length()));
     int colpos = unicodeColumnPosForMultiLine(l->buf, l->len, l->len, l->cols, pcolwid);
-    int colpos2; /* cursor column position. */
     int rows = (pcolwid+colpos+l->cols-1)/l->cols; /* rows used by current buf. */
     int rpos = (pcolwid+l->oldcolpos+l->cols)/l->cols; /* cursor relative row. */
-    int rpos2; /* rpos after refresh. */
-    int col; /* colum position, zero-based. */
     int old_rows = (int)l->maxrows;
-    int fd = l->ofd, j;
+    int fd = l->ofd;
     std::string ab;
 
     /* Update maxrows if needed. */
@@ -1902,7 +1895,7 @@ inline void refreshMultiLine(struct linenoiseState *l) {
     }
 
     /* Now for every row clear it, go up. */
-    for (j = 0; j < old_rows-1; j++) {
+    for (int j = 0; j < old_rows-1; j++) {
         snprintf(seq,64,"\r\x1b[0K\x1b[1A");
         ab += seq;
     }
@@ -1916,7 +1909,7 @@ inline void refreshMultiLine(struct linenoiseState *l) {
     ab.append(l->buf, l->len);
 
     /* Get text width to cursor position */
-    colpos2 = unicodeColumnPosForMultiLine(l->buf, l->len, l->pos, l->cols, pcolwid);
+    int colpos2 = unicodeColumnPosForMultiLine(l->buf, l->len, l->pos, l->cols, pcolwid);
 
     /* If we are at the very end of the screen with our prompt, we need to
      * emit a newline and move the prompt to the first column. */
@@ -1932,7 +1925,7 @@ inline void refreshMultiLine(struct linenoiseState *l) {
     }
 
     /* Move cursor to right position. */
-    rpos2 = (pcolwid+colpos2+l->cols)/l->cols; /* current cursor relative row. */
+    int rpos2 = (pcolwid + colpos2 + l->cols) / l->cols; /* current cursor relative row. */
 
     /* Go up till we reach the expected positon. */
     if (rows-rpos2 > 0) {
@@ -1941,7 +1934,7 @@ inline void refreshMultiLine(struct linenoiseState *l) {
     }
 
     /* Set column. */
-    col = (pcolwid + colpos2) % l->cols;
+    int col = (pcolwid + colpos2) % l->cols;
     if (col)
         snprintf(seq,64,"\r\x1b[%dC", col);
     else
@@ -2076,13 +2069,12 @@ inline void linenoiseEditBackspace(struct linenoiseState *l) {
  * current word. */
 inline void linenoiseEditDeletePrevWord(struct linenoiseState *l) {
     int old_pos = l->pos;
-    int diff;
 
     while (l->pos > 0 && l->buf[l->pos-1] == ' ')
         l->pos--;
     while (l->pos > 0 && l->buf[l->pos-1] != ' ')
         l->pos--;
-    diff = old_pos - l->pos;
+    int diff = old_pos - l->pos;
     memmove(l->buf+l->pos,l->buf+old_pos,l->len-old_pos+1);
     l->len -= diff;
     refreshLine(l);
