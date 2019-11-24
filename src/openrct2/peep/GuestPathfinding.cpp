@@ -134,14 +134,8 @@ static int32_t peep_move_one_tile(uint8_t direction, Peep* peep)
  *
  *  rct2: 0x00694C41
  */
-static int32_t guest_surface_path_finding(Peep* peep)
-{
-    int16_t x = peep->next_x;
-    int16_t y = peep->next_y;
-    int16_t z = peep->next_z;
-    uint8_t randDirection = scenario_rand() & 3;
 
-void fenceCheck(int16_t x, int16_t y, int16_t z, uint8_t randDirection)
+static void fenceCheck(int16_t x, int16_t y, int16_t z, uint8_t randDirection)
 {
     if (!fence_in_the_way(x, y, z, z + 4, randDirection))
     {
