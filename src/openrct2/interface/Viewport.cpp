@@ -1653,16 +1653,21 @@ static void sub_68862C(paint_session* session)
  * tileElement: edx
  * viewport: edi
  */
+
+//modified by Hannah to accept less parameters
 void get_map_coordinates_from_pos(
-    int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
+    std::pair<int32_t, int32_t> ScreenCoordsXY, int32_t flags, std::pair<int16_t*, int16_t*> &CoordsXY,
+    int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
-    rct_window* window = window_find_from_point(screenX, screenY);
-    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
+    rct_window* window = window_find_from_point(ScreenCoordsXY.first,ScreenCoordsXY.second);
+    get_map_coordinates_from_pos_window(window, ScreenCoordsXY, flags, CoordsXY, interactionType, tileElement, viewport);
 }
 
+// modified by Hannah to accept less parameters
 void get_map_coordinates_from_pos_window(
-    rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
+    rct_window* window, std::pair<int32_t, int32_t> ScreenCoordsXY, int32_t flags, std::pair<int16_t*, int16_t*> &CoordsXY,
+    int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
@@ -1670,19 +1675,20 @@ void get_map_coordinates_from_pos_window(
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        screenX -= (int32_t)myviewport->x;
-        screenY -= (int32_t)myviewport->y;
-        if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY < (int32_t)myviewport->height)
+        ScreenCoordsXY.first -= (int32_t)myviewport->x;
+        ScreenCoordsXY.second -= (int32_t)myviewport->y;
+        if (ScreenCoordsXY.first >= 0 && ScreenCoordsXY.first < (int32_t)myviewport->width && ScreenCoordsXY.second >= 0
+            && ScreenCoordsXY.second < (int32_t)myviewport->height)
         {
-            screenX <<= myviewport->zoom;
-            screenY <<= myviewport->zoom;
-            screenX += (int32_t)myviewport->view_x;
-            screenY += (int32_t)myviewport->view_y;
+            ScreenCoordsXY.first <<= myviewport->zoom;
+            ScreenCoordsXY.second <<= myviewport->zoom;
+            ScreenCoordsXY.first += (int32_t)myviewport->view_x;
+            ScreenCoordsXY.second += (int32_t)myviewport->view_y;
             _viewportDpi1.zoom_level = myviewport->zoom;
-            screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            _viewportDpi1.x = screenX;
-            _viewportDpi1.y = screenY;
+            ScreenCoordsXY.first &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            ScreenCoordsXY.second &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            _viewportDpi1.x = ScreenCoordsXY.first;
+            _viewportDpi1.y = ScreenCoordsXY.second;
             rct_drawpixelinfo* dpi = &_viewportDpi2;
             dpi->y = _viewportDpi1.y;
             dpi->height = 1;
@@ -1701,10 +1707,10 @@ void get_map_coordinates_from_pos_window(
     }
     if (interactionType != nullptr)
         *interactionType = _interactionSpriteType;
-    if (x != nullptr)
-        *x = _interactionMapX;
-    if (y != nullptr)
-        *y = _interactionMapY;
+    if (CoordsXY.first != nullptr)
+        *(CoordsXY.first) = _interactionMapX;
+    if (CoordsXY.second != nullptr)
+        *(CoordsXY.second) = _interactionMapY;
     if (tileElement != nullptr)
         *tileElement = _interaction_element;
 }
@@ -1783,7 +1789,7 @@ static rct_viewport* viewport_find_from_point(int32_t screenX, int32_t screenY)
  *  rct2: 0x00688972
  * In:
  *      screen_x: eax
- *      screen_y: ebx
+ *      screen_y: ebxvoid get_map_coordinates_from_pos
  * Out:
  *      x: ax
  *      y: bx
@@ -1795,8 +1801,15 @@ void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y,
     int16_t my_x, my_y;
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
+    //get_map_coordinates_from_pos(
+    //    screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = screenX; ScreenCoordsXY.second = screenY;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &my_x; CoordsXY.second = &my_y;
     get_map_coordinates_from_pos(
-        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
+        ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY, &interactionType,
+        nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         *x = LOCATION_NULL;

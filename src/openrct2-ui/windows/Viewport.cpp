@@ -149,9 +149,13 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
-                get_map_coordinates_from_pos(
-                    w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr,
-                    nullptr);
+                std::pair<int32_t, int32_t> ScreenCoordsXY;
+                ScreenCoordsXY.first = w->x + (w->width / 2);
+                ScreenCoordsXY.second = w->y + (w->height / 2);
+                std::pair<int16_t*, int16_t*> CoordsXY;
+                CoordsXY.first = &x;
+                CoordsXY.second = &y;
+                get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, nullptr, nullptr, nullptr);
                 window_scroll_to_location(mainWindow, x, y, tile_element_height(x, y));
             }
             break;

@@ -716,8 +716,14 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     int32_t interactionType{};
     TileElement* tileElement{};
     LocationXY16 mapCoord = {};
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &mapCoord.x;
+    CoordsXY.second = &mapCoord.y;
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY,
         &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
@@ -852,8 +858,14 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     footpath_provisional_update();
 
     LocationXY16 mapCoord = {};
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &mapCoord.x;
+    CoordsXY.second = &mapCoord.y;
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY,
         &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;

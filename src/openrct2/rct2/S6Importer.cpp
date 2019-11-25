@@ -986,6 +986,7 @@ public:
                 dst2->SetSeatRotation(src2->GetSeatRotation());
                 dst2->SetMazeEntry(src2->GetMazeEntry());
                 dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+
                 // Skipping IsHighlighted()
 
                 break;

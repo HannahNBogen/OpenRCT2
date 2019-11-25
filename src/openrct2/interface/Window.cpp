@@ -1007,7 +1007,13 @@ void window_viewport_get_map_coords_by_cursor(
     context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
     // Compute map coordinate by mouse position.
-    get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, nullptr, nullptr, nullptr);
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = mouse_x;
+    ScreenCoordsXY.second = mouse_y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = map_x;
+    CoordsXY.second = map_y;
+    get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
     int32_t base_height = tile_element_height(*map_x, *map_y);

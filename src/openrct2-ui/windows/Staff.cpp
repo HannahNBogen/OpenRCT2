@@ -1166,7 +1166,13 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     int32_t interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = nullptr;
+    CoordsXY.second = nullptr;
+    get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 

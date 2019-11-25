@@ -6328,7 +6328,13 @@ void ride_get_entrance_or_exit_position_from_screen_position(
     Ride* ride;
 
     gRideEntranceExitPlaceDirection = 255;
-    get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = screenX;
+    ScreenCoordsXY.second = screenY;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &mapX;
+    CoordsXY.second = &mapY;
+    get_map_coordinates_from_pos(ScreenCoordsXY, 0xFFFB, CoordsXY, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

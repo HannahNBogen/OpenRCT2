@@ -659,9 +659,14 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 TileElement* tileElement;
                 LocationXY16 mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
+                std::pair<int32_t, int32_t> ScreenCoordsXY;
+                ScreenCoordsXY.first = viewport->view_width / 2;
+                ScreenCoordsXY.second = viewport->view_height / 2;
+                std::pair<int16_t*, int16_t*> CoordsXY;
+                CoordsXY.first = &mapCoord.x;
+                CoordsXY.second = &mapCoord.y;
                 get_map_coordinates_from_pos(
-                    viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
-                    &mapCoord.y, &interactionType, &tileElement, nullptr);
+                    ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;

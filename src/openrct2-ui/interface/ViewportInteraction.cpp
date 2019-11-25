@@ -65,9 +65,14 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &mapCoord.x;
+    CoordsXY.second = &mapCoord.y;
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x,
-        &mapCoord.y, &info->type, &info->tileElement, nullptr);
+        ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, CoordsXY, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -211,8 +216,14 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &mapCoord.x;
+    CoordsXY.second = &mapCoord.y;
     get_map_coordinates_from_pos(
-        x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type,
+        ScreenCoordsXY, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), CoordsXY, &info->type,
         &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -641,8 +652,14 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
     int32_t interactionType;
     TileElement* myTileElement;
     rct_viewport* viewport;
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = screenX;
+    ScreenCoordsXY.second = screenY;
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = &my_x;
+    CoordsXY.second = &my_y;
     get_map_coordinates_from_pos(
-        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType,
+        ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, CoordsXY, &interactionType,
         &myTileElement, &viewport);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)

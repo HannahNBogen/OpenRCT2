@@ -2105,7 +2105,13 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
-            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+            std::pair<int32_t, int32_t> ScreenCoordsXY;
+            ScreenCoordsXY.first = screenX;
+            ScreenCoordsXY.second = screenY;
+            std::pair<int16_t*, int16_t*> CoordsXY;
+            CoordsXY.first = &mapX;
+            CoordsXY.second = &mapY;
+            get_map_coordinates_from_pos(ScreenCoordsXY, 0xFCCA, CoordsXY, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
                 _trackPlaceCtrlZ = tileElement->base_height * 8;
