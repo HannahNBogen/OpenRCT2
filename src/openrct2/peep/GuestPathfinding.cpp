@@ -134,13 +134,9 @@ static int32_t peep_move_one_tile(uint8_t direction, Peep* peep)
  *
  *  rct2: 0x00694C41
  */
-static int32_t guest_surface_path_finding(Peep* peep)
-{
-    int16_t x = peep->next_x;
-    int16_t y = peep->next_y;
-    int16_t z = peep->next_z;
-    uint8_t randDirection = scenario_rand() & 3;
 
+static void fenceCheck(int16_t x, int16_t y, int16_t z, uint8_t randDirection)
+{
     if (!fence_in_the_way(x, y, z, z + 4, randDirection))
     {
         x += CoordsDirectionDelta[randDirection].x;
@@ -155,6 +151,17 @@ static int32_t guest_surface_path_finding(Peep* peep)
             }
         }
     }
+}
+
+
+static int32_t guest_surface_path_finding(Peep* peep)
+{
+    int16_t x = peep->next_x;
+    int16_t y = peep->next_y;
+    int16_t z = peep->next_z;
+    uint8_t randDirection = scenario_rand() & 3;
+
+    fenceCheck(x, y, z, randDirection);
 
     randDirection++;
     uint8_t rand_backwards = scenario_rand() & 1;
@@ -166,40 +173,16 @@ static int32_t guest_surface_path_finding(Peep* peep)
 
     x = peep->next_x;
     y = peep->next_y;
-    if (!fence_in_the_way(x, y, z, z + 4, randDirection))
-    {
-        x += CoordsDirectionDelta[randDirection].x;
-        y += CoordsDirectionDelta[randDirection].y;
-        uint8_t backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
-        {
-            if (!map_surface_is_blocked(x, y))
-            {
-                return peep_move_one_tile(randDirection, peep);
-            }
-        }
-    }
+    fenceCheck(x, y, z, randDirection);
 
     randDirection -= 2;
     randDirection &= 3;
 
     x = peep->next_x;
     y = peep->next_y;
-    if (!fence_in_the_way(x, y, z, z + 4, randDirection))
-    {
-        x += CoordsDirectionDelta[randDirection].x;
-        y += CoordsDirectionDelta[randDirection].y;
-        uint8_t backwardsDirection = direction_reverse(randDirection);
-
-        if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
-        {
-            if (!map_surface_is_blocked(x, y))
-            {
-                return peep_move_one_tile(randDirection, peep);
-            }
-        }
-    }
+    
+    fenceCheck(x, y, z, randDirection);
 
     randDirection--;
     if (rand_backwards)

@@ -350,6 +350,36 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
     return std::make_unique<GameActionResult>();
 }
 
+static void bubbleSortElements(int32_t numElement, TileElement* firstElement, CoordsXY loc)
+{
+    for (int32_t loopStart = 1; loopStart < numElement; loopStart++)
+    {
+        int32_t currentId = loopStart;
+        const TileElement* currentElement = firstElement + currentId;
+        const TileElement* otherElement = currentElement - 1;
+
+        // While current element's base height is lower, or (when their baseheight is the same) the other map element's
+        // clearance height is lower...
+        while (currentId > 0
+               && (otherElement->base_height > currentElement->base_height
+                   || (otherElement->base_height == currentElement->base_height
+                       && otherElement->clearance_height > currentElement->clearance_height)))
+        {
+            if (!map_swap_elements_at(loc, currentId - 1, currentId))
+            {
+                // don't return error here, we've already ran some actions
+                // and moved things as far as we could, the only sensible
+                // thing left to do is to invalidate the window.
+                loopStart = numElement;
+                break;
+            }
+            currentId--;
+            currentElement--;
+            otherElement--;
+        }
+    }
+}
+
 GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecuting)
 {
     if (isExecuting)
@@ -365,32 +395,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
         } while (!(elementIterator++)->IsLastForTile());
 
         // Bubble sort
-        for (int32_t loopStart = 1; loopStart < numElement; loopStart++)
-        {
-            int32_t currentId = loopStart;
-            const TileElement* currentElement = firstElement + currentId;
-            const TileElement* otherElement = currentElement - 1;
-
-            // While current element's base height is lower, or (when their baseheight is the same) the other map element's
-            // clearance height is lower...
-            while (currentId > 0
-                   && (otherElement->base_height > currentElement->base_height
-                       || (otherElement->base_height == currentElement->base_height
-                           && otherElement->clearance_height > currentElement->clearance_height)))
-            {
-                if (!map_swap_elements_at(loc, currentId - 1, currentId))
-                {
-                    // don't return error here, we've already ran some actions
-                    // and moved things as far as we could, the only sensible
-                    // thing left to do is to invalidate the window.
-                    loopStart = numElement;
-                    break;
-                }
-                currentId--;
-                currentElement--;
-                otherElement--;
-            }
-        }
+        bubbleSortElements(numElement, firstElement, loc)
 
         map_invalidate_tile_full(loc.x, loc.y);
 
