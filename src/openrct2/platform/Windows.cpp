@@ -560,6 +560,8 @@ static bool windows_setup_file_association(
     wchar_t exePathW[MAX_PATH];
     wchar_t dllPathW[MAX_PATH];
 
+    [[maybe_unused]] int32_t printResult;
+
     GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
 
@@ -597,7 +599,7 @@ static bool windows_setup_file_association(
     }
     // [hRootKey\OpenRCT2.ext\DefaultIcon]
     wchar_t szIconW[MAX_PATH];
-    int32_t printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
+    printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
     assert(printResult >= 0);
     if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
     {
