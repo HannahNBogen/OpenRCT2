@@ -320,7 +320,7 @@ static void visible_list_refresh(rct_window* w)
             currentListItem.entry = (rct_object_entry*)&item->ObjectEntry;
             currentListItem.filter = filter;
             currentListItem.flags = &_objectSelectionFlags[i];
-            _listItems.push_back(std::move(currentListItem));
+            _listItems.push_back(currentListItem);
         }
     }
 
