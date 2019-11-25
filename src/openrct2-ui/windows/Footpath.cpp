@@ -704,6 +704,26 @@ static void window_footpath_mousedown_slope(int32_t slope)
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 /**
  *
  *  rct2: 0x006A81FB
@@ -716,12 +736,8 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     int32_t interactionType{};
     TileElement* tileElement{};
     LocationXY16 mapCoord = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapCoord.x;
-    CoordsXY.second = &mapCoord.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY,
         &interactionType, &tileElement, nullptr);
@@ -841,6 +857,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
     map_invalidate_selection_rect();
 }
 
+
 /**
  *
  *  rct2: 0x006A82C5
@@ -858,12 +875,8 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     footpath_provisional_update();
 
     LocationXY16 mapCoord = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapCoord.x;
-    CoordsXY.second = &mapCoord.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY,
         &interactionType, &tileElement, nullptr);

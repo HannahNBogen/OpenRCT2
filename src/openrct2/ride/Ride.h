@@ -388,9 +388,9 @@ public:
 
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
-    void SetCircuitsBack(); //needed to add a function that would
-                                //reset the number of circuits, in case
-                                //a track can only have one circuit
+    void SetCircuitsBack(); // needed to add a function that would
+                            // reset the number of circuits, in case
+                            // a track can only have one circuit
     void UpdateMaxVehicles();
 
     bool HasSpinningTunnel() const;
@@ -1200,5 +1200,9 @@ LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
+
+//helper functions
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y);
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y);
 
 #endif

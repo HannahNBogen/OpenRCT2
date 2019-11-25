@@ -2090,6 +2090,28 @@ static void window_ride_construction_update(rct_window* w)
     sub_6C94D8();
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 /**
  *
  *  rct2: 0x006CC538
@@ -2105,12 +2127,8 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
-            std::pair<int32_t, int32_t> ScreenCoordsXY;
-            ScreenCoordsXY.first = screenX;
-            ScreenCoordsXY.second = screenY;
-            std::pair<int16_t*, int16_t*> CoordsXY;
-            CoordsXY.first = &mapX;
-            CoordsXY.second = &mapY;
+            std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+            std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
             get_map_coordinates_from_pos(ScreenCoordsXY, 0xFCCA, CoordsXY, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {

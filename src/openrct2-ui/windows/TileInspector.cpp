@@ -1218,6 +1218,28 @@ static void window_tile_inspector_dropdown(rct_window* w, rct_widgetindex widget
     }
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     map_invalidate_selection_rect();
@@ -1229,12 +1251,8 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     TileElement* clickedElement = nullptr;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
-        std::pair<int32_t, int32_t> ScreenCoordsXY;
-        ScreenCoordsXY.first = x;
-        ScreenCoordsXY.second = y;
-        std::pair<int16_t*, int16_t*> CoordsXY;
-        CoordsXY.first = &mapX;
-        CoordsXY.second = &mapY;
+        std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+        std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
         get_map_coordinates_from_pos(ScreenCoordsXY, ViewportInteractionFlags, CoordsXY, nullptr, &clickedElement, nullptr);
     }
 
@@ -1283,12 +1301,8 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
     TileElement* clickedElement = nullptr;
     if (ctrlIsHeldDown)
     {
-        std::pair<int32_t, int32_t> ScreenCoordsXY;
-        ScreenCoordsXY.first = x;
-        ScreenCoordsXY.second = y;
-        std::pair<int16_t*, int16_t*> CoordsXY;
-        CoordsXY.first = &mapX;
-        CoordsXY.second = &mapY;
+        std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+        std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
         get_map_coordinates_from_pos(ScreenCoordsXY, ViewportInteractionFlags, CoordsXY, nullptr, &clickedElement, nullptr);
     }
 

@@ -6313,6 +6313,26 @@ static int32_t loc_6CD18E(
     return -1;
 }
 
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 /**
  *
  *  rct2: 0x006CCF70
@@ -6328,12 +6348,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(
     Ride* ride;
 
     gRideEntranceExitPlaceDirection = 255;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = screenX;
-    ScreenCoordsXY.second = screenY;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapX;
-    CoordsXY.second = &mapY;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
     get_map_coordinates_from_pos(ScreenCoordsXY, 0xFFFB, CoordsXY, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {

@@ -1784,6 +1784,28 @@ static rct_viewport* viewport_find_from_point(int32_t screenX, int32_t screenY)
     return viewport;
 }
 
+
+//Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 /**
  *
  *  rct2: 0x00688972
@@ -1801,12 +1823,8 @@ void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y,
     int16_t my_x, my_y;
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
-    //get_map_coordinates_from_pos(
-    //    screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = screenX; ScreenCoordsXY.second = screenY;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &my_x; CoordsXY.second = &my_y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&my_x, &my_y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY, &interactionType,
         nullptr, &myViewport);

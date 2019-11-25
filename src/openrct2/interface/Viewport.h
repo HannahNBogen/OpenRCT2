@@ -161,6 +161,12 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, std::pair<int32_t, int32_t> ScreenCoordsXY, int32_t flags, std::pair<int16_t*, int16_t*>& CoordsXY,
     int32_t* interactionType, TileElement** tileElement, rct_viewport** viewport);
 
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y);
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y);
+
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info);
 int32_t viewport_interaction_left_over(int32_t x, int32_t y);
 int32_t viewport_interaction_left_click(int32_t x, int32_t y);

@@ -762,4 +762,7 @@ extern bool _deferClose;
 rct_window* window_get_listening();
 rct_windowclass window_get_classification(rct_window* window);
 
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y);
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y);
+
 #endif

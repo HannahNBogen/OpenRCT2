@@ -121,6 +121,28 @@ static void window_viewport_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* mainWindow;
@@ -149,12 +171,8 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
-                std::pair<int32_t, int32_t> ScreenCoordsXY;
-                ScreenCoordsXY.first = w->x + (w->width / 2);
-                ScreenCoordsXY.second = w->y + (w->height / 2);
-                std::pair<int16_t*, int16_t*> CoordsXY;
-                CoordsXY.first = &x;
-                CoordsXY.second = &y;
+                std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(w->x + (w->width / 2), w->y + (w->height / 2));
+                std::pair<int16_t*, int16_t*> CoordsXY = Coords(&x, &y);
                 get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, nullptr, nullptr, nullptr);
                 window_scroll_to_location(mainWindow, x, y, tile_element_height(x, y));
             }

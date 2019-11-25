@@ -521,6 +521,27 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     return 0;
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
@@ -659,12 +680,8 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 TileElement* tileElement;
                 LocationXY16 mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
-                std::pair<int32_t, int32_t> ScreenCoordsXY;
-                ScreenCoordsXY.first = viewport->view_width / 2;
-                ScreenCoordsXY.second = viewport->view_height / 2;
-                std::pair<int16_t*, int16_t*> CoordsXY;
-                CoordsXY.first = &mapCoord.x;
-                CoordsXY.second = &mapCoord.y;
+                std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(viewport->view_width / 2, viewport->view_height / 2);
+                std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
                 get_map_coordinates_from_pos(
                     ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;

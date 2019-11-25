@@ -65,12 +65,8 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapCoord.x;
-    CoordsXY.second = &mapCoord.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, CoordsXY, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
@@ -195,6 +191,28 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
     }
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 /**
  *
  *  rct2: 0x006EDE88
@@ -216,12 +234,8 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapCoord.x;
-    CoordsXY.second = &mapCoord.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), CoordsXY, &info->type,
         &info->tileElement, nullptr);
@@ -652,12 +666,8 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
     int32_t interactionType;
     TileElement* myTileElement;
     rct_viewport* viewport;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = screenX;
-    ScreenCoordsXY.second = screenY;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &my_x;
-    CoordsXY.second = &my_y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&my_x, &my_y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, CoordsXY, &interactionType,
         &myTileElement, &viewport);

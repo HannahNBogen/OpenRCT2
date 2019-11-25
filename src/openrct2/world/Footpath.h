@@ -203,4 +203,9 @@ PathRailingsEntry* get_path_railings_entry(int32_t entryIndex);
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);
 
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y);
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y);
+
 #endif

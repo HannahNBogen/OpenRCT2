@@ -4327,6 +4327,26 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
     }
 }
 
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_t y)
 {
     TileElement* tileElement;
@@ -4336,12 +4356,8 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
     newColourScheme = (uint8_t)w->ride_colour;
 
     LocationXY16 mapCoord = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapCoord.x;
-    CoordsXY.second = &mapCoord.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_RIDE, CoordsXY, &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
@@ -5483,12 +5499,8 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     _lastSceneryY = y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapX;
-    CoordsXY.second = &mapY;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
     get_map_coordinates_from_pos(ScreenCoordsXY, 0xFCCF, CoordsXY, &interactionType, &tileElement, nullptr);
     switch (interactionType)
     {
@@ -5513,12 +5525,8 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
     int16_t mapX, mapY;
     int32_t interactionType;
 
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapX;
-    CoordsXY.second = &mapY;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapX, &mapY);
     get_map_coordinates_from_pos(ScreenCoordsXY, 0xFCCF, CoordsXY, &interactionType, &tileElement, nullptr);
     switch (interactionType)
     {

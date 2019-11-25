@@ -1218,6 +1218,26 @@ void window_guest_overview_text_input(rct_window* w, rct_widgetindex widgetIndex
     guest_set_name(w->number, text);
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 /**
  *
  *  rct2: 0x696A5F
@@ -1247,12 +1267,8 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     int32_t interactionType;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = nullptr;
-    CoordsXY.second = nullptr;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(nullptr, nullptr);
     get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;

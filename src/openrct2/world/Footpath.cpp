@@ -232,6 +232,28 @@ void footpath_provisional_update()
     footpath_provisional_remove();
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 /**
  * Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
  * then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
@@ -253,12 +275,8 @@ void footpath_get_coordinates_from_pos(
     TileElement* myTileElement;
     rct_viewport* viewport;
     LocationXY16 position = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = screenX;
-    ScreenCoordsXY.second = screenY;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &position.x;
-    CoordsXY.second = &position.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&position.x, &position.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_FOOTPATH, CoordsXY, &interactionType, &myTileElement,
         &viewport);
@@ -358,12 +376,8 @@ void footpath_bridge_get_info_from_pos(
     rct_viewport* viewport;
 
     LocationXY16 map_pos = {};
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = screenX;
-    ScreenCoordsXY.second = screenY;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &map_pos.x;
-    CoordsXY.second = &map_pos.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(screenX, screenY);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&map_pos.x, &map_pos.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_RIDE, CoordsXY, &interactionType, tileElement, &viewport);
     *x = map_pos.x;
@@ -385,8 +399,6 @@ void footpath_bridge_get_info_from_pos(
         }
     }
 
-    ScreenCoordsXY.first = screenX;
-    ScreenCoordsXY.second = screenY;
     CoordsXY.first = &map_pos.x;
     CoordsXY.second = &map_pos.y;
     get_map_coordinates_from_pos(

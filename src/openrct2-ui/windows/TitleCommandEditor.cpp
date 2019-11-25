@@ -187,6 +187,28 @@ static TITLE_COMMAND_ORDER get_command_info(int32_t index)
     return _window_title_command_editor_orders[0];
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 static LocationXY16 get_location()
 {
     LocationXY16 mapCoord = {};
@@ -196,12 +218,8 @@ static LocationXY16 get_location()
         int32_t interactionType;
         TileElement* tileElement;
 
-        std::pair<int32_t, int32_t> ScreenCoordsXY;
-        ScreenCoordsXY.first = w->viewport->view_width / 2;
-        ScreenCoordsXY.second = w->viewport->view_height / 2;
-        std::pair<int16_t*, int16_t*> CoordsXY;
-        CoordsXY.first = &mapCoord.x;
-        CoordsXY.second = &mapCoord.y;
+        std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(w->viewport->view_width / 2, w->viewport->view_height / 2);
+        std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapCoord.x, &mapCoord.y);
         get_map_coordinates_from_pos_window(w, ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN, CoordsXY, &interactionType, &tileElement, nullptr);
         mapCoord.x -= 16;
         mapCoord.x /= 32;

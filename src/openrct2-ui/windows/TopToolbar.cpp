@@ -1010,6 +1010,26 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
 /**
  *
  *  rct2: 0x006E3158
@@ -1027,12 +1047,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
     // not used
     rct_viewport* viewport;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &grid_x;
-    CoordsXY.second = &grid_y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&grid_x, &grid_y);
     get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &type, &tile_element, &viewport);
 
     switch (type)
@@ -1112,12 +1128,8 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     int32_t type;
     TileElement* tileElement;
     rct_viewport* viewport;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &gridX;
-    CoordsXY.second = &gridY;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&gridX, &gridY);
     get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &type, &tileElement, &viewport);
 
     switch (type)
@@ -1206,6 +1218,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     }
 }
 
+
 /**
  *
  *  rct2: 0x006E1F34
@@ -1285,12 +1298,8 @@ static void sub_6E1F34(
                     & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_WALL
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
-                std::pair<int32_t, int32_t> ScreenCoordsXY;
-                ScreenCoordsXY.first = x;
-                ScreenCoordsXY.second = y;
-                std::pair<int16_t*, int16_t*> CoordsXY;
-                CoordsXY.first = nullptr;
-                CoordsXY.second = nullptr;
+                std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+                std::pair<int16_t*, int16_t*> CoordsXY = Coords(nullptr, nullptr);
                 get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1434,12 +1443,8 @@ static void sub_6E1F34(
                 int32_t interaction_type = 0;
                 TileElement* tile_element;
 
-                std::pair<int32_t, int32_t> ScreenCoordsXY;
-                ScreenCoordsXY.first = x;
-                ScreenCoordsXY.second = y;
-                std::pair<int16_t*, int16_t*> CoordsXY;
-                CoordsXY.first = grid_x;
-                CoordsXY.second = grid_y;
+                std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+                std::pair<int16_t*, int16_t*> CoordsXY = Coords(grid_x, grid_y);
                 get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1514,12 +1519,8 @@ static void sub_6E1F34(
             int32_t interaction_type = 0;
             TileElement* tile_element;
 
-            std::pair<int32_t, int32_t> ScreenCoordsXY;
-            ScreenCoordsXY.first = x;
-            ScreenCoordsXY.second = y;
-            std::pair<int16_t*, int16_t*> CoordsXY;
-            CoordsXY.first = grid_x;
-            CoordsXY.second = grid_y;
+            std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+            std::pair<int16_t*, int16_t*> CoordsXY = Coords(grid_x, grid_y);
             get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &interaction_type, &tile_element, nullptr);
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1670,12 +1671,8 @@ static void sub_6E1F34(
             int32_t interaction_type = 0;
             TileElement* tile_element;
 
-            std::pair<int32_t, int32_t> ScreenCoordsXY;
-            ScreenCoordsXY.first = x;
-            ScreenCoordsXY.second = y;
-            std::pair<int16_t*, int16_t*> CoordsXY;
-            CoordsXY.first = grid_x;
-            CoordsXY.second = grid_y;
+            std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+            std::pair<int16_t*, int16_t*> CoordsXY = Coords(grid_x, grid_y);
             get_map_coordinates_from_pos(ScreenCoordsXY, flags, CoordsXY, &interaction_type, &tile_element, nullptr);
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -2429,12 +2426,8 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
 
     LocationXY16 mapTile = {};
     int32_t interaction_type = 0;
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = x;
-    ScreenCoordsXY.second = y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = &mapTile.x;
-    CoordsXY.second = &mapTile.y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(x, y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(&mapTile.x, &mapTile.y);
     get_map_coordinates_from_pos(
         ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, CoordsXY, &interaction_type,
         nullptr, nullptr);

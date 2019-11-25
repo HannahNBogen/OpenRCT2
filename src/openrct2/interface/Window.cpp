@@ -999,6 +999,28 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     reset_all_sprite_quadrant_placements();
 }
 
+
+// Helper function to get reduce long method code smell
+std::pair<int32_t, int32_t> ScreenCoords(int32_t x, int32_t y)
+{
+    std::pair<int32_t, int32_t> ScreenCoordsXY;
+    ScreenCoordsXY.first = x;
+    ScreenCoordsXY.second = y;
+    return ScreenCoordsXY;
+}
+
+
+// Helper function to get reduce long method code smell
+std::pair<int16_t*, int16_t*> Coords(int16_t* x, int16_t* y)
+{
+    std::pair<int16_t*, int16_t*> CoordsXY;
+    CoordsXY.first = x;
+    CoordsXY.second = y;
+    return CoordsXY;
+}
+
+
+
 void window_viewport_get_map_coords_by_cursor(
     rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y)
 {
@@ -1007,12 +1029,8 @@ void window_viewport_get_map_coords_by_cursor(
     context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
     // Compute map coordinate by mouse position.
-    std::pair<int32_t, int32_t> ScreenCoordsXY;
-    ScreenCoordsXY.first = mouse_x;
-    ScreenCoordsXY.second = mouse_y;
-    std::pair<int16_t*, int16_t*> CoordsXY;
-    CoordsXY.first = map_x;
-    CoordsXY.second = map_y;
+    std::pair<int32_t, int32_t> ScreenCoordsXY = ScreenCoords(mouse_x, mouse_y);
+    std::pair<int16_t*, int16_t*> CoordsXY = Coords(map_x, map_y);
     get_map_coordinates_from_pos(ScreenCoordsXY, VIEWPORT_INTERACTION_MASK_NONE, CoordsXY, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
