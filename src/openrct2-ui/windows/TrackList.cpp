@@ -150,7 +150,7 @@ rct_window* window_track_list_open(ride_list_item item)
 
     // Start with first track highlighted
     w->selected_list_item = 0;
-    if (_trackDesigns.size() != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+    if (!_trackDesigns.empty() && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         w->selected_list_item = 1;
     }
