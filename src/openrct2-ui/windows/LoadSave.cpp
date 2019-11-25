@@ -920,7 +920,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
                 newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
 
                 // Mark if file is the currently loaded game
-                newListItem.loaded = newListItem.path.compare(gCurrentLoadedPath.c_str()) == 0;
+                newListItem.loaded = newListItem.path == gCurrentLoadedPath.c_str();
 
                 // Remove the extension (but only the first extension token)
                 if (!showExtension)
