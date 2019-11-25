@@ -453,7 +453,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
             else
             {
                 CompareSpriteData(spriteBase, spriteCmp, changeData);
-                if (changeData.diffs.size() == 0)
+                if (changeData.diffs.empty())
                 {
                     changeData.changeType = GameStateSpriteChange_t::EQUAL;
                 }
